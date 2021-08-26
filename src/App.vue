@@ -1,5 +1,5 @@
 <template>
-<div class="container-fluid" id="app">
+<div class="container-fluid gx-0" id="app">
     <Header></Header>
     <router-view/>
     
@@ -16,7 +16,11 @@ export default {
   components: {
     Header,
     Footer
-  }
+  },
+  data() {
+    return{
+    }
+  },
 }
 </script>
 

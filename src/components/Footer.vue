@@ -1,7 +1,7 @@
 <template>
   <div class="footer-box row">
       <div class="footer-info col-8">
-          <h1>About Us</h1>
+          <h1>About Me</h1>
           <p>This is a project by Paul Burgess. You can uses this in anyway you wish as long as it is <b>NON-COMMERCIAL</b>.
             This project uses Bootstrap and FontAwesome for stylization. If you would like to get in contact with me please use one of the links to the right.</p>
       </div>

@@ -1,7 +1,11 @@
 <template>
 <div class="header-container row">
     <div class="row">
-        <h1>Header</h1>
+        <h1>
+            <i class="fas fa-beer"></i>
+            Brewski Database
+            <i class="fas fa-beer"></i>
+        </h1>
     </div>
     <div>
         <router-link class="btn btn-primary" to="/"> Card View </router-link>
@@ -26,6 +30,7 @@ export default {
     background-color: var(--clr-bg-hf);
     color: var(--clr-text);
     padding-top:1rem;
+    padding-bottom: 1rem;
 }
 h1{
     color: var(--clr-text);
