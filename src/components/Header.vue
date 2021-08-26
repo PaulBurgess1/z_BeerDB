@@ -7,6 +7,9 @@
             <i class="fas fa-beer"></i>
         </h1>
     </div>
+    <div class="">
+        <a class="btn btn-success mb-1" href="https://docs.google.com/spreadsheets/d/1Z2imEpWmwWmLuy85fDLK9Y5PWWCCAhXm33oI1sh6CtA/edit?usp=sharing">To The Database</a>
+    </div>
     <div>
         <router-link class="btn btn-primary" to="/"> Card View </router-link>
         <router-link class="btn btn-primary" to="/table"> Table View </router-link>

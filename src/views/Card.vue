@@ -4,17 +4,17 @@
             <div class="card beer-card">
                 <img v-if="beer[10]" class="card-img-top" v-bind:src="beer[10]" v-bind:alt="beer[0]">
                 <img v-else class="card-img-top" src="favicon.ico" v-bind:alt="beer[0]">
-                <div class="card-body w-100">
+                <div class="card-body w-100 p-0">
                     <h5 class="card-title"><b>{{beer[0]}}</b></h5>
                     <p class="card-subtitle">{{beer[1]}}</p>
                     <p class="card-text">{{beer[2]}}</p>
                     <p class="card-text">{{beer[9]}}</p>
                     <p class="card-text">ABV: {{beer[7]}}</p>
                     <p class="card-text">IBU: {{beer[8]}}</p>
-                    <div v-if="beer[3] && beer[4]" class="card-footer" :style="{ backgroundColor: `hsl(${((parseFloat(beer[3]) + parseFloat(beer[4])) / 2 ).toFixed(1)*10}, 80%, 50%)` }">
+                    <div v-if="beer[3] && beer[4]" class="beer-rating" :style="{ backgroundColor: `hsl(${((parseFloat(beer[3]) + parseFloat(beer[4])) / 2 ).toFixed(1)*10}, 80%, 50%)` }">
                         <h1> {{  ((parseFloat(beer[3]) + parseFloat(beer[4]))/2).toFixed(1)   }}</h1>
                     </div>
-                    <div v-else class="card-footer" :style="{ backgroundColor: `hsl(${Math.max(beer[3], beer[4])*10}, 80%, 50%)` }">
+                    <div v-else class="beer-rating" :style="{ backgroundColor: `hsl(${Math.max(beer[3], beer[4])*10}, 80%, 50%)` }">
                         <h1> {{  Math.max(beer[3], beer[4])    }}</h1>
                     </div>
                 </div>
@@ -110,5 +110,32 @@ export default {
 .beer-card img{
   height: 17rem;
   width: 17rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+.beer-rating{
+    border-radius: 0rem 0rem 1rem 1rem;
+    margin:0;
+    padding: 0.5rem;
+}
+.card-body > p {
+    margin: 0.3rem;
+}
+/*Media Queries*/
+@media(max-width: 40em){
+    .beer-deck{
+        padding: 0;
+    }
+    .beer-card{
+        max-width: 8rem;
+        margin:0.4rem;
+
+    }
+    .beer-card img{
+        height: 8rem;
+        width: 8rem;
+    }
+    .card-body > p {
+        margin: 0rem;
+    }
 }
 </style>
