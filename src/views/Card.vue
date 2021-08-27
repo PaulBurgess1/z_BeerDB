@@ -69,9 +69,6 @@ export default {
     },
     getDB(){
       return this.db_array;
-    },
-    getRatingColor(rating){
-        return "backgroundColor: hsl("+(rating*10)+",100%,50%)"
     }
   },
   mounted (){
