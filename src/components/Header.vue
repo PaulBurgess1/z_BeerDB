@@ -1,7 +1,7 @@
 <template>
-<div class="header-container row">
-    <div class="row">
-        <h1>
+<div class="header-container row gx-0">
+    <div class="header-title">
+        <h1 class="header-title">
             <i class="fas fa-beer"></i>
             Brewski Database
             <i class="fas fa-beer"></i>
@@ -37,5 +37,18 @@ export default {
 }
 h1{
     color: var(--clr-text);
+}
+.header-title{
+    white-space: nowrap;
+    background-image: 
+      linear-gradient(180deg, var(--clr-text), #F6C101);
+    background-clip: text;
+    color: transparent;
+}
+.header-title > i{
+background-image: 
+      linear-gradient(180deg, var(--clr-text), #F6C101);
+    background-clip: text;
+    color: transparent;
 }
 </style>

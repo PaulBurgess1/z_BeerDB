@@ -1,5 +1,5 @@
 <template>
-  <div class="footer-box row">
+  <div class="footer-box row gx-0">
       <div class="footer-info col-8">
           <h1>About Me</h1>
           <p>This is a project by Paul Burgess. You can uses this in anyway you wish as long as it is <b>NON-COMMERCIAL</b>.

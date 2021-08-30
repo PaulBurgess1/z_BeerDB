@@ -1,5 +1,5 @@
 <template>
-<div class="container-fluid gx-0" id="app">
+<div class="container-fluid gx-0 p-0 m-0 w-100" id="app">
     <Header></Header>
     <router-view/>
     
@@ -37,6 +37,5 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
 }
 </style>
