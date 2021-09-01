@@ -1,52 +1,150 @@
 <template>
-    <div>
-        <div class="row deck-head bg-dark">
-                <div class="col">
-                    <h5>Name</h5>
-                    <div class="btn-box">
-                        <button class="sort-btn" @click="sortByName(1)">
-                            <i class="fas fa-arrow-up"></i>
-                        </button>
-                        <button class="sort-btn" @click="sortByName(0)">
-                            <i class="fas fa-arrow-down"></i>
-                        </button>
-                    </div>
+    <div class="main-div">
+        <div class="deck-head bg-dark">
+            
+            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a 
+                    class="nav-link active" 
+                    id="search-tab" 
+                    data-toggle="tab"
+                    data-mdb-toggle="tab" 
+                    href="#search" 
+                    role="tab" 
+                    aria-controls="search"
+                    aria-selected="true">
+                    Search</a>
+                </li>
+                <li class="nav-item">
+                    <a 
+                    class="nav-link active" 
+                    id="sort-tab" 
+                    data-toggle="tab" 
+                    data-mdb-toggle="tab" 
+                    href="#sort" 
+                    role="tab" 
+                    aria-controls="sort"
+                    aria-selected="false">
+                    Sort</a>
+                </li>
+                <li class="nav-item">
+                    <a 
+                    class="nav-link active" 
+                    id="filter-tab" 
+                    data-toggle="tab" 
+                    data-mdb-toggle="tab" 
+                    href="#filter" 
+                    role="tab" 
+                    aria-controls="filter"
+                    aria-selected="false">Filter</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
+                        <!--Search-->
+                        <div class="row pt-1 gx-0">
+                            <form v-on:submit.prevent class="bg-dark">
+                                <div class="input-group rounded">
+                                    <input type="search" id="search" v-model="search_q" class="form-control rounded" placeholder="Search" v-on:keyup.enter="searchDB"/>
+                                <button type="button" class="btn btn-info" @click="searchDB">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                </div>
+                            </form>
+                        </div>
+            </div>
+            <div class="tab-pane fade show" id="filter" role="tabpanel" aria-labelledby="filter-tab">
+                        <!--Filter-->
+                        <div class="row pt-1 gx-0">
+                            <div class="col gx-0">
+                                <h5>Type</h5>
+                                <div class="btn-box">
+                                <select class="form-select form-select-sm" name="types" id="types" v-model="selected_type" @change="this.filterByType();">
+                                    <option selected></option>
+                                    <option v-for="type in TYPES" :key="type" :value="type">
+                                        {{type}}
+                                    </option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col gx-0">
+                                <h5>Country</h5>
+                                <div class="btn-box">
+                                <select class="form-select form-select-sm" name="country" id="country" v-model="selected_country" @change="this.filterByCountry();">
+                                    <option selected value=""></option>
+                                    <option v-for="country in countries" :key="country" :value="country">
+                                        {{country}}
+                                    </option>
+                                </select>
+                                </div>
+                            </div>
+                            
+                        </div>
+            </div>
+            <div class="tab-pane fade show" id="sort" role="tabpanel" aria-labelledby="sort-tab">
+                    <!--Sort-->
+                        <div class="row pt-1 gx-0">
+                            <div class="col gx-0">
+                                <h5>Name</h5>
+                                <div class="btn-box">
+                                    <button class="sort-btn" @click="sortByName(1)">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </button>
+                                    <button class="sort-btn" @click="sortByName(0)">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5>Rank</h5>
+                                <div class="btn-box">
+                                    <button class="sort-btn" @click="sortByAvgRank(1)">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </button>
+                                    <button class="sort-btn" @click="sortByAvgRank(0)">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5>ABV</h5>
+                                <div class="btn-box">
+                                    <button class="sort-btn" @click="sortByABV(1)">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </button>
+                                    <button class="sort-btn" @click="sortByABV(0)">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5>IBU</h5>
+                                <div class="btn-box">
+                                    <button class="sort-btn" @click="sortByIBU(1)">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </button>
+                                    <button class="sort-btn" @click="sortByIBU(0)">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                 </div>
-                <div class="col">
-                    <h5>Rank</h5>
-                    <div class="btn-box">
-                        <button class="sort-btn" @click="sortByAvgRank(1)">
-                            <i class="fas fa-arrow-up"></i>
-                        </button>
-                        <button class="sort-btn" @click="sortByAvgRank(0)">
-                            <i class="fas fa-arrow-down"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="col">
-                    <h5>ABV</h5>
-                    <div class="btn-box">
-                        <button class="sort-btn" @click="sortByABV(1)">
-                            <i class="fas fa-arrow-up"></i>
-                        </button>
-                        <button class="sort-btn" @click="sortByABV(0)">
-                            <i class="fas fa-arrow-down"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="col">
-                    <h5>IBU</h5>
-                    <div class="btn-box">
-                        <button class="sort-btn" @click="sortByIBU(1)">
-                            <i class="fas fa-arrow-up"></i>
-                        </button>
-                        <button class="sort-btn" @click="sortByIBU(0)">
-                            <i class="fas fa-arrow-down"></i>
-                        </button>
-                    </div>
-                </div>
+                </div>    
+            </div>
+        <!--Tabs End-->
+
+        <!--Refresh Button-->
+        <div class="refresh-btn-box">
+            <button class="btn btn-info" role="tab" @click="resetDB">
+                <i class="fas fa-redo"></i>
+                Refresh
+            </button>
         </div>
+        <!--The Goods-->
         <div class="card-deck beer-deck" v-for="beer in db_array" :key="beer.Name">
+            
             <div class="card beer-card">
                 <img v-if="beer.img_url" class="card-img-top" v-bind:src="beer.img_url" v-bind:alt="beer.Name">
                 <img v-else class="card-img-top" src="favicon.ico" v-bind:alt="beer.Name">
@@ -79,6 +177,12 @@ export default {
             SHEET_URL: "https://sheets.googleapis.com/v4/spreadsheets/1Z2imEpWmwWmLuy85fDLK9Y5PWWCCAhXm33oI1sh6CtA/values/BeerDB!A1:L100",
             API_KEY: "AIzaSyBZHUcJA31kXOHWWS3jFNVoQ-Y_zs-0AYw",
             db_array:[],
+            full_array:[],
+            TYPES: ["IPA", "Pilsner", "Lager", "Ale", "Cider", "Wheat", "Beverage"],
+            countries: [],
+            selected_country: '',
+            selected_type: '',
+            search_q: ''
         }
         
     },
@@ -111,14 +215,32 @@ export default {
             acc[(data.values)[0][i]] = cur;
             return acc;
           }, {}));
-          //console.log(this.db_array)
+          //Set Full array
+          this.full_array = [...this.db_array];
+          //Set Countries
+          this.setCountries();
         }
         else{
           alert("Error data is empty");
         }
         
       },
-      /*  Sorting Methods */
+      setCountries(){
+        for (let x of this.full_array){
+          //console.log(x)
+          //console.log(x.Country)
+          if(!this.countries.includes(x.Country)){
+            this.countries.push(x.Country)
+          }
+        }
+        //console.log(this.countries)
+      },
+      resetDB(){
+        this.db_array = [...this.full_array];
+        //Reset variables
+        this.search_q, this.selected_country, this.selected_type ="";
+      },
+      //****************Sorting by different Tags ******************************************************/
       sortByName(mode){
         if(mode){
           //asc
@@ -127,6 +249,16 @@ export default {
         else{
           //desc
           (this.db_array).sort(function(a,b) {return (a.Name < b.Name) ? 1 : ((b.Name < a.Name) ? -1 : 0);} ); 
+        }
+      },
+      sortByBrewery(mode){
+        if(mode){
+          //asc
+          (this.db_array).sort(function(a,b) {return (a.Brewery > b.Brewery) ? 1 : ((b.Brewery > a.Brewery) ? -1 : 0);} ); 
+        }
+        else{
+          //desc
+          (this.db_array).sort(function(a,b) {return (a.Brewery < b.Brewery) ? 1 : ((b.Brewery < a.Brewery) ? -1 : 0);} ); 
         }
       },
       sortByAvgRank(mode){
@@ -159,7 +291,87 @@ export default {
           (this.db_array).sort(function(a,b) {return (a.IBU < b.IBU) ? 1 : ((b.IBU < a.IBU) ? -1 : 0);} ); 
         }
       },
-  },
+      /* Filtering */
+      filterByType(){
+        if(this.selected_type){
+          let temp =[];
+          for (let x of this.full_array){
+            if(x.Type.includes(this.selected_type)){
+              temp.push(x)
+            }
+          }
+          if(temp.length < 1){
+            alert("no search results")
+          }
+          else{
+            this.db_array = [...temp];
+          }
+          
+        }
+        else{
+          this.resetDB();
+        }
+        
+        
+      },
+      filterByCountry(){
+        if(this.selected_country){
+          let temp =[];
+          for (let x of this.full_array){
+            if(!this.selected_country.localeCompare(x.Country)){
+              temp.push(x)
+            }
+
+          }
+          //console.log(temp)
+          if(temp.length < 1){
+            alert("no search results")
+          }
+          else{
+            this.db_array = [...temp];
+          }
+          
+        }
+        else{
+          this.resetDB();
+        }
+        
+      },
+      //**Search */
+      searchDB(){
+        if(this.search_q){
+          let temp =[];
+          for (let x of this.full_array){
+            if(x.Name.includes(this.search_q)){
+              temp.push(x)
+            }
+            else if (x.Brewery.includes(this.search_q)) {
+              temp.push(x)
+            } 
+            else if(x.Type.includes(this.search_q)){
+              temp.push(x)
+            }
+            else if(x.Origin.includes(this.search_q)){
+              temp.push(x)
+            }
+            
+
+          }//for
+          //console.log(temp)
+          if(temp.length < 1){
+            alert("no search results")
+          }
+          else{
+            this.db_array = [...temp];
+          }
+          
+        }
+        else{
+          this.resetDB();
+        }
+        }
+      
+    },
   mounted (){
     if(this.db_array.length === 0){
       this.initDB();
@@ -171,8 +383,20 @@ export default {
 </script>
 
 <style>
+/*
+.main-div{
+    background-image: url(https://envato-shoebox-0.imgix.net/f309/08f0-c751-4da9-ba9f-62c7a94fd21f/_K4A7247.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=1600&s=15745df6fd33f570f570abb0259ca7d0);
+
+}
+*/
 .deck-head{
     text-align: center;
+    padding-bottom: 0.5rem;
+}
+.refresh-btn-box{
+    padding: 0.5rem 0 0 0.5rem;
+    text-align: left;
+
 }
 .beer-deck{
   display: inline-flex;
@@ -180,6 +404,7 @@ export default {
   align-items: center;
   align-content: center;
   padding:1rem 1rem;
+
 }
 .beer-title{
     background-color: lightgrey;
@@ -213,6 +438,10 @@ export default {
 }
 .card-body > p {
     margin: 0.3rem;
+}
+.col{
+    padding:0;
+    margin:0;
 }
 .col > h5{
     color: var(--clr-text)
