@@ -2,10 +2,11 @@
     <div class="main-div">
         <div class="deck-head bg-dark">
             
-            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+            <ul class="nav nav-justified" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a 
-                    class="nav-link active" 
+                    class="nav-link btn btn-outline-light" 
+                    data-mdb-ripple-color="light"
                     id="search-tab" 
                     data-toggle="tab"
                     data-mdb-toggle="tab" 
@@ -17,7 +18,8 @@
                 </li>
                 <li class="nav-item">
                     <a 
-                    class="nav-link active" 
+                    class="nav-link btn btn-outline-light" 
+                    data-mdb-ripple-color="light"
                     id="sort-tab" 
                     data-toggle="tab" 
                     data-mdb-toggle="tab" 
@@ -25,20 +27,27 @@
                     role="tab" 
                     aria-controls="sort"
                     aria-selected="false">
-                    Sort</a>
+                    Sort
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a 
-                    class="nav-link active" 
+                    class="nav-link btn btn-outline-light" 
                     id="filter-tab" 
                     data-toggle="tab" 
                     data-mdb-toggle="tab" 
                     href="#filter" 
                     role="tab" 
                     aria-controls="filter"
-                    aria-selected="false">Filter</a>
+                    aria-selected="false">
+                    Filter</a>
                 </li>
             </ul>
+            <!--Alert-->
+            <div class="alert alert-warning alert-dismissible fade in show" id="search_alert" style="display: none;">
+                <strong><i class="fas fa-exclamation-triangle"></i></strong> No Search Results Found.
+                <a href="#" class="close" @click="removeAlert">&times;</a>
+            </div>
             <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
                         <!--Search-->
@@ -151,16 +160,14 @@
                 <div class="card-body w-100 p-0">
                     <div class="beer-title">
                         <h5 class="card-title"><b>{{beer.Name}}</b></h5>
-                        <p class="card-subtitle">{{beer.Brewery}}</p>
+                        <p class="card-subtitle">{{beer.Brewery}} <i :class="'flag flag-'+(beer.Country).toLowerCase()"></i></p>
                     </div>
                     <p class="card-text">{{beer.Type}}</p>
-                    <p class="card-text">
-                        <i :class="'flag flag-'+(beer.Country).toLowerCase()"></i>
-                        </p>
                     <p class="card-text">ABV: {{beer.ABV}}</p>
-                    <p class="card-text">IBU: {{beer.IBU}}</p>
+                    <p v-if="beer.IBU" class="card-text">IBU: {{beer.IBU}}</p>
                     <div class="beer-rating" :style="{ backgroundColor: `hsl(${beer.Avg_Rank*10}, 80%, 50%)` }">
-                        <h1> {{beer.Avg_Rank}}</h1>
+                        <h1 v-if="beer.Avg_Rank!=='#DIV/0!'" > {{beer.Avg_Rank}}</h1>
+                        <h1 v-else> N/A </h1>
                     </div>
                 </div>
             </div><!--Item-->
@@ -178,7 +185,7 @@ export default {
             API_KEY: "AIzaSyBZHUcJA31kXOHWWS3jFNVoQ-Y_zs-0AYw",
             db_array:[],
             full_array:[],
-            TYPES: ["IPA", "Pilsner", "Lager", "Ale", "Cider", "Wheat", "Beverage"],
+            TYPES: ["IPA", "Pilsener", "Lager", "Ale","Stout", "Cider", "Wheat", "Beverage"],
             countries: [],
             selected_country: '',
             selected_type: '',
@@ -232,6 +239,7 @@ export default {
           if(!this.countries.includes(x.Country)){
             this.countries.push(x.Country)
           }
+          this.countries.sort();
         }
         //console.log(this.countries)
       },
@@ -239,6 +247,9 @@ export default {
         this.db_array = [...this.full_array];
         //Reset variables
         this.search_q, this.selected_country, this.selected_type ="";
+      },
+      removeAlert(){
+          document.getElementById("search_alert").setAttribute("style","display: none;");
       },
       //****************Sorting by different Tags ******************************************************/
       sortByName(mode){
@@ -274,11 +285,11 @@ export default {
       sortByABV(mode){
         if(mode){
           //asc
-          (this.db_array).sort(function(a,b) {return (a.ABV > b.ABV) ? 1 : ((b.ABV > a.ABV) ? -1 : 0);} ); 
+          (this.db_array).sort(function(a,b) {return (parseFloat(a.ABV) > parseFloat(b.ABV)) ? 1 : ((parseFloat(b.ABV) > parseFloat(a.ABV)) ? -1 : 0);} ); 
         }
         else{
           //desc
-          (this.db_array).sort(function(a,b) {return (a.ABV < b.ABV) ? 1 : ((b.ABV < a.ABV) ? -1 : 0);} ); 
+          (this.db_array).sort(function(a,b) {return (parseFloat(a.ABV) < parseFloat(b.ABV)) ? 1 : ((parseFloat(b.ABV) < parseFloat(a.ABV)) ? -1 : 0);} ); 
         }
       },
       sortByIBU(mode){
@@ -301,7 +312,7 @@ export default {
             }
           }
           if(temp.length < 1){
-            alert("no search results")
+            document.getElementById("search_alert").setAttribute("style","display: default;");
           }
           else{
             this.db_array = [...temp];
@@ -325,7 +336,7 @@ export default {
           }
           //console.log(temp)
           if(temp.length < 1){
-            alert("no search results")
+            document.getElementById("search_alert").setAttribute("style","display: default;");
           }
           else{
             this.db_array = [...temp];
@@ -359,7 +370,7 @@ export default {
           }//for
           //console.log(temp)
           if(temp.length < 1){
-            alert("no search results")
+            document.getElementById("search_alert").setAttribute("style","display: default;");
           }
           else{
             this.db_array = [...temp];
@@ -435,6 +446,7 @@ export default {
     border-radius: 0rem 0rem 1rem 1rem;
     margin:0;
     padding: 0.5rem;
+    background-color: lightskyblue;
 }
 .card-body > p {
     margin: 0.3rem;

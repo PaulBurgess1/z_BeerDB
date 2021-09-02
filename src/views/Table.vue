@@ -11,6 +11,10 @@
                         <thead class="table-dark">
                           <tr class="bg-dark">
                             <th colspan="4">
+                              <div class="alert alert-warning text-left fade in show" id="search_alert" style="display: none;">
+                                <span class="float-left"><strong><i class="fas fa-exclamation-triangle"></i></strong> No Search Results Found.</span>
+                                <a href="#" class="close float-right" @click="removeAlert">&times;</a>
+                              </div>
                               <form v-on:submit.prevent class="bg-dark">
                                           <div class="input-group rounded">
                                               <input type="search" id="search" v-model="search_q" class="form-control rounded" placeholder="Search" v-on:keyup.enter="searchDB"/>
@@ -112,8 +116,28 @@
                                 </div>
                               </th>
                             <th scope="col">Origin</th>
-                            <th scope="col">Felix's Rank</th>
-                            <th scope="col">Paul's Rank</th>
+                            <th scope="col">
+                              Felix's Rank
+                              <div class="btn-box">
+                                <button class="sort-btn" @click="sortByFRank(1)">
+                                  <i class="fas fa-arrow-up"></i>
+                                </button>
+                                <button class="sort-btn" @click="sortByFRank(0)">
+                                  <i class="fas fa-arrow-down"></i>
+                                </button>
+                              </div>
+                              </th>
+                            <th scope="col">
+                              Paul's Rank
+                              <div class="btn-box">
+                                <button class="sort-btn" @click="sortByPRank(1)">
+                                  <i class="fas fa-arrow-up"></i>
+                                </button>
+                                <button class="sort-btn" @click="sortByPRank(0)">
+                                  <i class="fas fa-arrow-down"></i>
+                                </button>
+                              </div>
+                              </th>
                         </tr>
                         </thead>
                         <tbody >
@@ -124,8 +148,9 @@
                             </td>
                             <td>{{beer.Name}}</td><!--Name-->
                             <td>{{beer.Brewery}}</td><!--Brewery-->
-                            <td class="table-active" :style="{ backgroundColor: `hsl(${beer.Avg_Rank * 10}, 80%, 50%)` }">
-                              <h3>{{beer.Avg_Rank}}</h3>
+                            <td class="table-active" :style="{ backgroundColor: `hsl(${beer.Avg_Rank * 11.7}, 80%, 50%)` }">
+                              <h3 v-if="beer.Avg_Rank!=='#DIV/0!'" > {{beer.Avg_Rank}}</h3>
+                              <h3 v-else> N/A </h3>
                               </td>
                             <td>{{beer.Type}}</td><!--Type-->
                             <td>{{beer.ABV}}</td><!--ABV-->
@@ -154,7 +179,7 @@ export default {
             API_KEY: "AIzaSyBZHUcJA31kXOHWWS3jFNVoQ-Y_zs-0AYw",
             db_array:[],
             full_array:[],
-            TYPES: ["IPA", "Pilsner", "Lager", "Ale", "Cider", "Wheat", "Beverage"],
+            TYPES: ["IPA", "Pilsener", "Lager", "Ale","Stout", "Cider", "Wheat", "Beverage"],
             countries: [],
             selected_country: '',
             selected_type: '',
@@ -208,6 +233,7 @@ export default {
           if(!this.countries.includes(x.Country)){
             this.countries.push(x.Country)
           }
+          this.countries.sort();
         }
         //console.log(this.countries)
       },
@@ -215,6 +241,9 @@ export default {
         this.db_array = [...this.full_array];
         //Reset variables
         this.search_q, this.selected_country, this.selected_type ="";
+      },
+      removeAlert(){
+          document.getElementById("search_alert").setAttribute("style","display: none;");
       },
       //****************Sorting by different Tags ******************************************************/
       sortByName(mode){
@@ -247,14 +276,14 @@ export default {
           (this.db_array).sort(function(a,b) {return (a.Avg_Rank < b.Avg_Rank) ? 1 : ((b.Avg_Rank < a.Avg_Rank) ? -1 : 0);} ); 
         }
       },
-      sortByABV(mode){
+     sortByABV(mode){
         if(mode){
           //asc
-          (this.db_array).sort(function(a,b) {return (a.ABV > b.ABV) ? 1 : ((b.ABV > a.ABV) ? -1 : 0);} ); 
+          (this.db_array).sort(function(a,b) {return (parseFloat(a.ABV) > parseFloat(b.ABV)) ? 1 : ((parseFloat(b.ABV) > parseFloat(a.ABV)) ? -1 : 0);} ); 
         }
         else{
           //desc
-          (this.db_array).sort(function(a,b) {return (a.ABV < b.ABV) ? 1 : ((b.ABV < a.ABV) ? -1 : 0);} ); 
+          (this.db_array).sort(function(a,b) {return (parseFloat(a.ABV) < parseFloat(b.ABV)) ? 1 : ((parseFloat(b.ABV) < parseFloat(a.ABV)) ? -1 : 0);} ); 
         }
       },
       sortByIBU(mode){
@@ -267,6 +296,26 @@ export default {
           (this.db_array).sort(function(a,b) {return (a.IBU < b.IBU) ? 1 : ((b.IBU < a.IBU) ? -1 : 0);} ); 
         }
       },
+      sortByFRank(mode){
+        if(mode){
+          //asc
+          (this.db_array).sort(function(a,b) {return (a.Rank_F > b.Rank_F) ? 1 : ((b.Rank_F > a.Rank_F) ? -1 : 0);} ); 
+        }
+        else{
+          //desc
+          (this.db_array).sort(function(a,b) {return (a.Rank_F < b.Rank_F) ? 1 : ((b.Rank_F < a.Rank_F) ? -1 : 0);} ); 
+        }
+      },
+      sortByPRank(mode){
+        if(mode){
+          //asc
+          (this.db_array).sort(function(a,b) {return (a.Rank_P > b.Rank_P) ? 1 : ((b.Rank_P > a.Rank_P) ? -1 : 0);} ); 
+        }
+        else{
+          //desc
+          (this.db_array).sort(function(a,b) {return (a.Rank_P < b.Rank_P) ? 1 : ((b.Rank_P < a.Rank_P) ? -1 : 0);} ); 
+        }
+      },
       /* Filtering */
       filterByType(){
         if(this.selected_type){
@@ -277,7 +326,7 @@ export default {
             }
           }
           if(temp.length < 1){
-            alert("no search results")
+            document.getElementById("search_alert").setAttribute("style","display: default;");
           }
           else{
             this.db_array = [...temp];
@@ -301,7 +350,7 @@ export default {
           }
           //console.log(temp)
           if(temp.length < 1){
-            alert("no search results")
+            document.getElementById("search_alert").setAttribute("style","display: default;");
           }
           else{
             this.db_array = [...temp];
@@ -335,7 +384,7 @@ export default {
           }//for
           //console.log(temp)
           if(temp.length < 1){
-            alert("no search results")
+            document.getElementById("search_alert").setAttribute("style","display: default;");
           }
           else{
             this.db_array = [...temp];
