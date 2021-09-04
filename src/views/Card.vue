@@ -14,7 +14,7 @@
                     role="tab" 
                     aria-controls="search"
                     aria-selected="true">
-                    Search</a>
+                    <i class="fas fa-search-plus"></i> <small>Search</small> </a>
                 </li>
                 <li class="nav-item">
                     <a 
@@ -27,7 +27,7 @@
                     role="tab" 
                     aria-controls="sort"
                     aria-selected="false">
-                    Sort
+                    <i class="fas fa-sort"></i> Sort
                     </a>
                 </li>
                 <li class="nav-item">
@@ -40,7 +40,7 @@
                     role="tab" 
                     aria-controls="filter"
                     aria-selected="false">
-                    Filter</a>
+                    <i class="fas fa-filter"></i> Filter</a>
                 </li>
             </ul>
             <!--Alert-->
@@ -87,7 +87,17 @@
                                 </select>
                                 </div>
                             </div>
-                            
+                            <div class="col gx-0">
+                                <h5>Brewery Type</h5>
+                                <div class="btn-box">
+                                <select class="form-select form-select-sm" name="b_types" id="b_types" v-model="selected_brewery_type" @change="this.filterByBreweryType();">
+                                    <option selected></option>
+                                    <option v-for="b_type in BREWERY_TYPES" :key="b_type" :value="b_type">
+                                        {{b_type}}
+                                    </option>
+                                </select>
+                                </div>
+                            </div>
                         </div>
             </div>
             <div class="tab-pane fade show" id="sort" role="tabpanel" aria-labelledby="sort-tab">
@@ -97,21 +107,33 @@
                                 <h5>Name</h5>
                                 <div class="btn-box">
                                     <button class="sort-btn" @click="sortByName(1)">
-                                        <i class="fas fa-arrow-up"></i>
+                                       <i class="fas fa-sort-up"></i>
                                     </button>
                                     <button class="sort-btn" @click="sortByName(0)">
-                                        <i class="fas fa-arrow-down"></i>
+                                        <i class="fas fa-sort-down"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="col">
+                                <h5>Brewery</h5>
+                                <div class="btn-box">
+                                    <button class="sort-btn" @click="sortByBrewery(1)">
+                                        <i class="fas fa-sort-up"></i>
+                                    </button>
+                                    <button class="sort-btn" @click="sortByBrewery(0)">
+                                        <i class="fas fa-sort-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        
+                            <div class="col">
                                 <h5>Rank</h5>
                                 <div class="btn-box">
                                     <button class="sort-btn" @click="sortByAvgRank(1)">
-                                        <i class="fas fa-arrow-up"></i>
+                                        <i class="fas fa-sort-up"></i>
                                     </button>
                                     <button class="sort-btn" @click="sortByAvgRank(0)">
-                                        <i class="fas fa-arrow-down"></i>
+                                        <i class="fas fa-sort-down"></i>
                                     </button>
                                 </div>
                             </div>
@@ -119,10 +141,10 @@
                                 <h5>ABV</h5>
                                 <div class="btn-box">
                                     <button class="sort-btn" @click="sortByABV(1)">
-                                        <i class="fas fa-arrow-up"></i>
+                                        <i class="fas fa-sort-up"></i>
                                     </button>
                                     <button class="sort-btn" @click="sortByABV(0)">
-                                        <i class="fas fa-arrow-down"></i>
+                                        <i class="fas fa-sort-down"></i>
                                     </button>
                                 </div>
                             </div>
@@ -130,10 +152,10 @@
                                 <h5>IBU</h5>
                                 <div class="btn-box">
                                     <button class="sort-btn" @click="sortByIBU(1)">
-                                        <i class="fas fa-arrow-up"></i>
+                                        <i class="fas fa-sort-up"></i>
                                     </button>
                                     <button class="sort-btn" @click="sortByIBU(0)">
-                                        <i class="fas fa-arrow-down"></i>
+                                        <i class="fas fa-sort-down"></i>
                                     </button>
                                 </div>
                             </div>
@@ -162,9 +184,13 @@
                         <h5 class="card-title"><b>{{beer.Name}}</b></h5>
                         <p class="card-subtitle">{{beer.Brewery}} <i :class="'flag flag-'+(beer.Country).toLowerCase()"></i></p>
                     </div>
-                    <p class="card-text">{{beer.Type}}</p>
+                    <p class="card-text">
+                      <span v-if="beer.Brewery_Type!=='Megabrewery'">({{beer.Brewery_Type}}) </span>
+                      {{beer.Type}}
+                      </p>
                     <p class="card-text">ABV: {{beer.ABV}}</p>
                     <p v-if="beer.IBU" class="card-text">IBU: {{beer.IBU}}</p>
+                    <p v-else>No IBU</p>
                     <div class="beer-rating" :style="{ backgroundColor: `hsl(${beer.Avg_Rank*10}, 80%, 50%)` }">
                         <h1 v-if="beer.Avg_Rank!=='#DIV/0!'" > {{beer.Avg_Rank}}</h1>
                         <h1 v-else> N/A </h1>
@@ -176,219 +202,11 @@
 </template>
 
 <script>
+import { dbMixin } from "../mixins/dbMixin";
 export default {
+  mixins: [dbMixin],
     name: "Card",
-    data(){
-        return{
-            SHEET_ID: "1Z2imEpWmwWmLuy85fDLK9Y5PWWCCAhXm33oI1sh6CtA",
-            SHEET_URL: "https://sheets.googleapis.com/v4/spreadsheets/1Z2imEpWmwWmLuy85fDLK9Y5PWWCCAhXm33oI1sh6CtA/values/BeerDB!A1:L100",
-            API_KEY: "AIzaSyBZHUcJA31kXOHWWS3jFNVoQ-Y_zs-0AYw",
-            db_array:[],
-            full_array:[],
-            TYPES: ["IPA", "Pilsener", "Lager", "Ale","Stout", "Cider", "Wheat", "Beverage"],
-            countries: [],
-            selected_country: '',
-            selected_type: '',
-            search_q: ''
-        }
-        
-    },
-    methods:{
-      initDB(){
-        try {
-          fetch(this.SHEET_URL+"?key="+this.API_KEY)
-          .then(res => {
-            if (res.status == 200){
-                let data =res.json();
-                //console.log(data)
-                return data;
-              }
-              else{
-                console.log("error")
-                alert("Error "+res.status+": "+res.statusText);
-                return;
-              }
-          })
-          .then(this.setDB);
-        } catch (error) {
-          alert(error.message);
-        }
-      },
-      setDB(data){
-        if(data){
-          //Convert from double array into array of objects
-          //this.db_array = data.values;
-          this.db_array= (data.values).slice(1).map(row => row.reduce(function(acc, cur, i) {
-            acc[(data.values)[0][i]] = cur;
-            return acc;
-          }, {}));
-          //Set Full array
-          this.full_array = [...this.db_array];
-          //Set Countries
-          this.setCountries();
-        }
-        else{
-          alert("Error data is empty");
-        }
-        
-      },
-      setCountries(){
-        for (let x of this.full_array){
-          //console.log(x)
-          //console.log(x.Country)
-          if(!this.countries.includes(x.Country)){
-            this.countries.push(x.Country)
-          }
-          this.countries.sort();
-        }
-        //console.log(this.countries)
-      },
-      resetDB(){
-        this.db_array = [...this.full_array];
-        //Reset variables
-        this.search_q, this.selected_country, this.selected_type ="";
-      },
-      removeAlert(){
-          document.getElementById("search_alert").setAttribute("style","display: none;");
-      },
-      //****************Sorting by different Tags ******************************************************/
-      sortByName(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (a.Name < b.Name) ? 1 : ((b.Name < a.Name) ? -1 : 0);} ); 
-        }
-      },
-      sortByBrewery(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (a.Brewery > b.Brewery) ? 1 : ((b.Brewery > a.Brewery) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (a.Brewery < b.Brewery) ? 1 : ((b.Brewery < a.Brewery) ? -1 : 0);} ); 
-        }
-      },
-      sortByAvgRank(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (a.Avg_Rank > b.Avg_Rank) ? 1 : ((b.Avg_Rank > a.Avg_Rank) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (a.Avg_Rank < b.Avg_Rank) ? 1 : ((b.Avg_Rank < a.Avg_Rank) ? -1 : 0);} ); 
-        }
-      },
-      sortByABV(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (parseFloat(a.ABV) > parseFloat(b.ABV)) ? 1 : ((parseFloat(b.ABV) > parseFloat(a.ABV)) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (parseFloat(a.ABV) < parseFloat(b.ABV)) ? 1 : ((parseFloat(b.ABV) < parseFloat(a.ABV)) ? -1 : 0);} ); 
-        }
-      },
-      sortByIBU(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (a.IBU > b.IBU) ? 1 : ((b.IBU > a.IBU) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (a.IBU < b.IBU) ? 1 : ((b.IBU < a.IBU) ? -1 : 0);} ); 
-        }
-      },
-      /* Filtering */
-      filterByType(){
-        if(this.selected_type){
-          let temp =[];
-          for (let x of this.full_array){
-            if(x.Type.includes(this.selected_type)){
-              temp.push(x)
-            }
-          }
-          if(temp.length < 1){
-            document.getElementById("search_alert").setAttribute("style","display: default;");
-          }
-          else{
-            this.db_array = [...temp];
-          }
-          
-        }
-        else{
-          this.resetDB();
-        }
-        
-        
-      },
-      filterByCountry(){
-        if(this.selected_country){
-          let temp =[];
-          for (let x of this.full_array){
-            if(!this.selected_country.localeCompare(x.Country)){
-              temp.push(x)
-            }
-
-          }
-          //console.log(temp)
-          if(temp.length < 1){
-            document.getElementById("search_alert").setAttribute("style","display: default;");
-          }
-          else{
-            this.db_array = [...temp];
-          }
-          
-        }
-        else{
-          this.resetDB();
-        }
-        
-      },
-      //**Search */
-      searchDB(){
-        if(this.search_q){
-          let temp =[];
-          for (let x of this.full_array){
-            if(x.Name.includes(this.search_q)){
-              temp.push(x)
-            }
-            else if (x.Brewery.includes(this.search_q)) {
-              temp.push(x)
-            } 
-            else if(x.Type.includes(this.search_q)){
-              temp.push(x)
-            }
-            else if(x.Origin.includes(this.search_q)){
-              temp.push(x)
-            }
-            
-
-          }//for
-          //console.log(temp)
-          if(temp.length < 1){
-            document.getElementById("search_alert").setAttribute("style","display: default;");
-          }
-          else{
-            this.db_array = [...temp];
-          }
-          
-        }
-        else{
-          this.resetDB();
-        }
-        }
-      
-    },
-  mounted (){
-    if(this.db_array.length === 0){
-      this.initDB();
-      //console.log(this.db_array)
-    }
-  }
+    
 
 }
 </script>
@@ -458,6 +276,11 @@ export default {
 .col > h5{
     color: var(--clr-text)
 }
+.sort-btn{
+  min-height: 1.875rem;
+  min-width: 2rem;
+  width: 50%;
+}
 /*Media Queries*/
 @media(max-width: 40em){
     .beer-deck{
@@ -475,5 +298,8 @@ export default {
     .card-body > p {
         margin: 0rem;
     }
+    .col > h5{
+  font-size: 90%;
+}
 }
 </style>

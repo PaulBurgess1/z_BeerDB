@@ -25,7 +25,7 @@
                                         </form>
                             </th>
                             <!--Search-->
-                            <th colspan="8"></th>
+                            <th colspan="9"></th>
                           </tr>
                         <tr>
                             <th scope="col">
@@ -42,10 +42,10 @@
                               Name
                               <div class="btn-box">
                                 <button type="button" class="sort-btn" @click="sortByName(1)">
-                                  <i class="fas fa-arrow-up"></i>
+                                  <i class="fas fa-sort-up"></i>
                                 </button>
                                 <button type="button" class="sort-btn" @click="sortByName(0)">
-                                  <i class="fas fa-arrow-down"></i>
+                                  <i class="fas fa-sort-down"></i>
                                 </button>
                               </div>
                             </th>
@@ -53,10 +53,10 @@
                               Brewery
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByBrewery(1)">
-                                  <i class="fas fa-arrow-up"></i>
+                                  <i class="fas fa-sort-up"></i>
                                 </button>
                                 <button class="sort-btn" @click="sortByBrewery(0)">
-                                  <i class="fas fa-arrow-down"></i>
+                                  <i class="fas fa-sort-down"></i>
                                 </button>
                               </div>
                             </th>
@@ -64,10 +64,10 @@
                               Avg Rank
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByAvgRank(1)">
-                                  <i class="fas fa-arrow-up"></i>
+                                  <i class="fas fa-sort-up"></i>
                                 </button>
                                 <button class="sort-btn" @click="sortByAvgRank(0)">
-                                  <i class="fas fa-arrow-down"></i>
+                                  <i class="fas fa-sort-down"></i>
                                 </button>
                               </div>
                               </th>
@@ -81,26 +81,36 @@
                                   </option>
                                 </select>
                               </div>
-                              
+                              </th>
+                            <th scope="col">
+                             <small>Brewery Type</small>
+                              <div class="btn-box">
+                                <select class="form-select form-select-sm" name="b_type" id="b_type" v-model="selected_brewery_type" @change="this.filterByBreweryType();">
+                                  <option selected value=""></option>
+                                  <option v-for="b_type in BREWERY_TYPES" :key="b_type" :value="b_type">
+                                      {{b_type}}
+                                  </option>
+                                </select>
+                                </div>
                               </th>
                             <th scope="col">
                               ABV
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByABV(1)">
-                                  <i class="fas fa-arrow-up"></i>
+                                  <i class="fas fa-sort-up"></i>
                                 </button>
                                 <button class="sort-btn" @click="sortByABV(0)">
-                                  <i class="fas fa-arrow-down"></i>
+                                  <i class="fas fa-sort-down"></i>
                                 </button>
                               </div></th>
                             <th scope="col">
                               IBU
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByIBU(1)">
-                                  <i class="fas fa-arrow-up"></i>
+                                  <i class="fas fa-sort-up"></i>
                                 </button>
                                 <button class="sort-btn" @click="sortByIBU(0)">
-                                  <i class="fas fa-arrow-down"></i>
+                                  <i class="fas fa-sort-down"></i>
                                 </button>
                               </div></th>
                             <th scope="col">$ Per Can</th>
@@ -108,7 +118,7 @@
                               Country
                               <div class="btn-box">
                                 <select class="form-select form-select-sm" name="country" id="country" v-model="selected_country" @change="this.filterByCountry();">
-                                  <option selected value=""></option>
+                                  <option selected></option>
                                   <option v-for="country in countries" :key="country" :value="country">
                                       {{country}}
                                   </option>
@@ -120,10 +130,10 @@
                               Felix's Rank
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByFRank(1)">
-                                  <i class="fas fa-arrow-up"></i>
+                                  <i class="fas fa-sort-up"></i>
                                 </button>
                                 <button class="sort-btn" @click="sortByFRank(0)">
-                                  <i class="fas fa-arrow-down"></i>
+                                  <i class="fas fa-sort-down"></i>
                                 </button>
                               </div>
                               </th>
@@ -131,10 +141,10 @@
                               Paul's Rank
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByPRank(1)">
-                                  <i class="fas fa-arrow-up"></i>
+                                  <i class="fas fa-sort-up"></i>
                                 </button>
                                 <button class="sort-btn" @click="sortByPRank(0)">
-                                  <i class="fas fa-arrow-down"></i>
+                                  <i class="fas fa-sort-down"></i>
                                 </button>
                               </div>
                               </th>
@@ -153,6 +163,7 @@
                               <h3 v-else> N/A </h3>
                               </td>
                             <td>{{beer.Type}}</td><!--Type-->
+                            <td>{{beer.Brewery_Type}}</td>
                             <td>{{beer.ABV}}</td><!--ABV-->
                             <td>{{beer.IBU}}</td><!--IBU-->
                             <td>{{beer.PricePerCan}}</td><!--APPX price per can-->
@@ -170,238 +181,11 @@
 </template>
 
 <script>
+import {dbMixin} from '../mixins/dbMixin'
 export default {
-    name: "table",
-    data(){
-        return{
-            SHEET_ID: "1Z2imEpWmwWmLuy85fDLK9Y5PWWCCAhXm33oI1sh6CtA",
-            SHEET_URL: "https://sheets.googleapis.com/v4/spreadsheets/1Z2imEpWmwWmLuy85fDLK9Y5PWWCCAhXm33oI1sh6CtA/values/BeerDB!A1:L100",
-            API_KEY: "AIzaSyBZHUcJA31kXOHWWS3jFNVoQ-Y_zs-0AYw",
-            db_array:[],
-            full_array:[],
-            TYPES: ["IPA", "Pilsener", "Lager", "Ale","Stout", "Cider", "Wheat", "Beverage"],
-            countries: [],
-            selected_country: '',
-            selected_type: '',
-            search_q: ''
-        }
-        
-    },
-    methods:{
-      initDB(){
-        try {
-          fetch(this.SHEET_URL+"?key="+this.API_KEY)
-          .then(res => {
-            if (res.status == 200){
-                let data =res.json();
-                //console.log(data)
-                return data;
-              }
-              else{
-                console.log("error")
-                alert("Error "+res.status+": "+res.statusText);
-                return;
-              }
-          })
-          .then(this.setDB);
-        } catch (error) {
-          alert(error.message);
-        }
-      },
-      setDB(data){
-        if(data){
-          //Convert from double array into array of objects
-          //this.db_array = data.values;
-          this.db_array= (data.values).slice(1).map(row => row.reduce(function(acc, cur, i) {
-            acc[(data.values)[0][i]] = cur;
-            return acc;
-          }, {}));
-          //Set Full array
-          this.full_array = [...this.db_array];
-          //Set Countries
-          this.setCountries();
-        }
-        else{
-          alert("Error data is empty");
-        }
-        
-      },
-      setCountries(){
-        for (let x of this.full_array){
-          //console.log(x)
-          //console.log(x.Country)
-          if(!this.countries.includes(x.Country)){
-            this.countries.push(x.Country)
-          }
-          this.countries.sort();
-        }
-        //console.log(this.countries)
-      },
-      resetDB(){
-        this.db_array = [...this.full_array];
-        //Reset variables
-        this.search_q, this.selected_country, this.selected_type ="";
-      },
-      removeAlert(){
-          document.getElementById("search_alert").setAttribute("style","display: none;");
-      },
-      //****************Sorting by different Tags ******************************************************/
-      sortByName(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (a.Name < b.Name) ? 1 : ((b.Name < a.Name) ? -1 : 0);} ); 
-        }
-      },
-      sortByBrewery(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (a.Brewery > b.Brewery) ? 1 : ((b.Brewery > a.Brewery) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (a.Brewery < b.Brewery) ? 1 : ((b.Brewery < a.Brewery) ? -1 : 0);} ); 
-        }
-      },
-      sortByAvgRank(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (a.Avg_Rank > b.Avg_Rank) ? 1 : ((b.Avg_Rank > a.Avg_Rank) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (a.Avg_Rank < b.Avg_Rank) ? 1 : ((b.Avg_Rank < a.Avg_Rank) ? -1 : 0);} ); 
-        }
-      },
-     sortByABV(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (parseFloat(a.ABV) > parseFloat(b.ABV)) ? 1 : ((parseFloat(b.ABV) > parseFloat(a.ABV)) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (parseFloat(a.ABV) < parseFloat(b.ABV)) ? 1 : ((parseFloat(b.ABV) < parseFloat(a.ABV)) ? -1 : 0);} ); 
-        }
-      },
-      sortByIBU(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (a.IBU > b.IBU) ? 1 : ((b.IBU > a.IBU) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (a.IBU < b.IBU) ? 1 : ((b.IBU < a.IBU) ? -1 : 0);} ); 
-        }
-      },
-      sortByFRank(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (a.Rank_F > b.Rank_F) ? 1 : ((b.Rank_F > a.Rank_F) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (a.Rank_F < b.Rank_F) ? 1 : ((b.Rank_F < a.Rank_F) ? -1 : 0);} ); 
-        }
-      },
-      sortByPRank(mode){
-        if(mode){
-          //asc
-          (this.db_array).sort(function(a,b) {return (a.Rank_P > b.Rank_P) ? 1 : ((b.Rank_P > a.Rank_P) ? -1 : 0);} ); 
-        }
-        else{
-          //desc
-          (this.db_array).sort(function(a,b) {return (a.Rank_P < b.Rank_P) ? 1 : ((b.Rank_P < a.Rank_P) ? -1 : 0);} ); 
-        }
-      },
-      /* Filtering */
-      filterByType(){
-        if(this.selected_type){
-          let temp =[];
-          for (let x of this.full_array){
-            if(x.Type.includes(this.selected_type)){
-              temp.push(x)
-            }
-          }
-          if(temp.length < 1){
-            document.getElementById("search_alert").setAttribute("style","display: default;");
-          }
-          else{
-            this.db_array = [...temp];
-          }
-          
-        }
-        else{
-          this.resetDB();
-        }
-        
-        
-      },
-      filterByCountry(){
-        if(this.selected_country){
-          let temp =[];
-          for (let x of this.full_array){
-            if(!this.selected_country.localeCompare(x.Country)){
-              temp.push(x)
-            }
-
-          }
-          //console.log(temp)
-          if(temp.length < 1){
-            document.getElementById("search_alert").setAttribute("style","display: default;");
-          }
-          else{
-            this.db_array = [...temp];
-          }
-          
-        }
-        else{
-          this.resetDB();
-        }
-        
-      },
-      //**Search */
-      searchDB(){
-        if(this.search_q){
-          let temp =[];
-          for (let x of this.full_array){
-            if(x.Name.includes(this.search_q)){
-              temp.push(x)
-            }
-            else if (x.Brewery.includes(this.search_q)) {
-              temp.push(x)
-            } 
-            else if(x.Type.includes(this.search_q)){
-              temp.push(x)
-            }
-            else if(x.Origin.includes(this.search_q)){
-              temp.push(x)
-            }
-            
-
-          }//for
-          //console.log(temp)
-          if(temp.length < 1){
-            document.getElementById("search_alert").setAttribute("style","display: default;");
-          }
-          else{
-            this.db_array = [...temp];
-          }
-          
-        }
-        else{
-          this.resetDB();
-        }
-        }
-      
-    },
-  mounted (){
-    if(this.db_array.length === 0){
-      this.initDB();
-    }
-  }
+  mixins: [dbMixin],
+  name: "table",
+    
 }
 </script>
 <style>
