@@ -77,6 +77,17 @@
                                 </div>
                             </div>
                             <div class="col gx-0">
+                                <h5>Brewery</h5>
+                                <div class="btn-box">
+                                <select class="form-select form-select-sm" name="brewery" id="brewery" v-model="selected_brewery" @change="this.filterByBrewery();">
+                                    <option selected></option>
+                                    <option v-for="brewery in breweries" :key="brewery" :value="brewery">
+                                        {{brewery}}
+                                    </option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col gx-0">
                                 <h5>Country</h5>
                                 <div class="btn-box">
                                 <select class="form-select form-select-sm" name="country" id="country" v-model="selected_country" @change="this.filterByCountry();">
@@ -88,7 +99,7 @@
                                 </div>
                             </div>
                             <div class="col gx-0">
-                                <h5>Brewery Type</h5>
+                                <h5><small>Brewery Type</small></h5>
                                 <div class="btn-box">
                                 <select class="form-select form-select-sm" name="b_types" id="b_types" v-model="selected_brewery_type" @change="this.filterByBreweryType();">
                                     <option selected></option>
@@ -98,7 +109,36 @@
                                 </select>
                                 </div>
                             </div>
+                            
                         </div>
+                        <div class="row gx-0 mt-1">
+                                <div class="rank-filter-box">
+                                    <button class="btn btn-secondary px-2"  @click="getUnrated">
+                                        <i class="fas fa-question-circle"></i>
+                                        <strong> Unrated  </strong>
+                                        <i class="fas fa-question-circle"></i>
+                                        </button>
+                                    <button class="btn btn-secondary px-2"  @click="getRated">
+                                        <i class="fas fa-glass-cheers"></i>
+                                       <strong> Rated  </strong>
+                                        <i class="fas fa-glass-cheers"></i> 
+                                        </button>
+                                    <button class="btn btn-success px-2"  @click="filterByRating(7,1)">
+                                        <i class="fas fa-star"></i> 
+                                        <strong> Best  </strong>
+                                        <i class="fas fa-star"></i> 
+                                        </button>
+                                    <button class="btn btn-danger px-2"  @click="filterByRating(3,0)">
+                                        <i class="fas fa-skull-crossbones"></i> 
+                                        <strong> Worst </strong>
+                                        <i class="fas fa-skull-crossbones"></i> 
+                                        </button>
+                                </div>
+                                    
+                            
+                                
+                            </div>
+                        
             </div>
             <div class="tab-pane fade show" id="sort" role="tabpanel" aria-labelledby="sort-tab">
                     <!--Sort-->
@@ -182,7 +222,9 @@
                 <div class="card-body w-100 p-0">
                     <div class="beer-title">
                         <h5 class="card-title"><b>{{beer.Name}}</b></h5>
-                        <p class="card-subtitle">{{beer.Brewery}} <i :class="'flag flag-'+(beer.Country).toLowerCase()"></i></p>
+                        <p class="card-subtitle">{{beer.Brewery}} 
+                            <i v-if="beer.Country" :class="'flag flag-'+(beer.Country).toLowerCase()"></i>
+                        </p>
                     </div>
                     <p class="card-text">
                       <span v-if="beer.Brewery_Type!=='Megabrewery'">({{beer.Brewery_Type}}) </span>
@@ -281,6 +323,16 @@ export default {
   min-width: 2rem;
   width: 50%;
 }
+.rank-filter-box{
+    display: flex;
+    justify-content: center;
+    
+    
+}
+.rank-filter-box>*:not(:first-child){
+    margin-left: 1rem;
+}
+
 /*Media Queries*/
 @media(max-width: 40em){
     .beer-deck{
@@ -299,7 +351,7 @@ export default {
         margin: 0rem;
     }
     .col > h5{
-  font-size: 90%;
-}
+    font-size: 90%;
+    }
 }
 </style>

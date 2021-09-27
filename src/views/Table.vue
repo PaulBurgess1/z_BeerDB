@@ -25,7 +25,32 @@
                                         </form>
                             </th>
                             <!--Search-->
-                            <th colspan="9"></th>
+                            <th colspan="9">
+                              <button class="btn btn-secondary px-2"  @click="getUnrated">
+                                  <i class="fas fa-question-circle"></i>
+                                  Unrated
+                                  <i class="fas fa-question-circle"></i>
+                              </button>
+                              
+                              <button class="btn btn-secondary px-2"  @click="getRated">
+                                  <i class="fas fa-glass-cheers"></i> 
+                                  Rated
+                                  <i class="fas fa-glass-cheers"></i> 
+                              </button>
+
+                              <button class="btn btn-success px-2"  @click="filterByRating(7,1)">
+                                <i class="fas fa-star"></i> 
+                                Best 
+                                <i class="fas fa-star"></i> 
+                              </button>
+
+                              <button class="btn btn-danger px-2"  @click="filterByRating(3,0)">
+                                <i class="fas fa-skull-crossbones"></i> 
+                                Worst
+                                <i class="fas fa-skull-crossbones"></i> 
+                              </button>
+
+                            </th>
                           </tr>
                         <tr>
                             <th scope="col">
@@ -35,9 +60,7 @@
                                     <i class="fas fa-redo"></i>
                                   </button>
                                 </div>
-                              
                             </th>
-
                             <th data-field="Name" scope="col">
                               Name
                               <div class="btn-box">
@@ -50,15 +73,21 @@
                               </div>
                             </th>
                             <th data-field="Brewery" scope="col">
-                              Brewery
-                              <div class="btn-box">
-                                <button class="sort-btn" @click="sortByBrewery(1)">
+                              <div class="btn-box-small">
+                                <button class="sort-btn-small" @click="sortByBrewery(1)">
                                   <i class="fas fa-sort-up"></i>
                                 </button>
-                                <button class="sort-btn" @click="sortByBrewery(0)">
+                                Brewery
+                                <button class="sort-btn-small" @click="sortByBrewery(0)">
                                   <i class="fas fa-sort-down"></i>
                                 </button>
                               </div>
+                              <select class="form-select form-select-sm" name="brewery" id="brewery" v-model="selected_brewery" @change="this.filterByBrewery();">
+                                <option selected></option>
+                                <option v-for="brewery in breweries" :key="brewery" :value="brewery">
+                                    {{brewery}}
+                                </option>
+                              </select>
                             </th>
                             <th scope="col">
                               Avg Rank
@@ -227,9 +256,20 @@ td,th{
   white-space: nowrap;
 }
 .sort-btn{
+  
   min-height: 1.875rem;
   min-width: 2rem;
   width: 50%;
+}
+.btn-box-small{
+  display:flex;
+  justify-content: space-between;
+  width:100%;
+  white-space: nowrap;
+}
+.sort-btn-small{
+  min-width: 2rem;
+  max-width: 25%;
 }
 .btn-refresh{
   width:100%;
@@ -238,7 +278,13 @@ td,th{
   padding:0;
   margin-bottom: 0.3rem;
 }
-
+th > button{
+  max-height: 2.25rem;
+  min-width: none;
+}
+th > button:not(:first-child){
+  margin-left:1rem;
+}
 /*Media Queries*/
 @media(max-width: 40rem){
     .beer-img{

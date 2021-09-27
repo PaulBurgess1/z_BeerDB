@@ -10,6 +10,8 @@ export const dbMixin ={
             selected_type: '',
             countries: [],
             selected_country: '',
+            breweries: [],
+            selected_brewery: '',
             BREWERY_TYPES: ["Megabrewery", "Craft", "Regional"],
             selected_brewery_type: '',
             search_q: ''
@@ -49,6 +51,8 @@ export const dbMixin ={
           this.full_array = [...this.db_array];
           //Set Countries
           this.setCountries();
+          //Set Breweries
+          this.setBreweries();
         }
         else{
           alert("Error data is empty");
@@ -66,10 +70,21 @@ export const dbMixin ={
         }
         //console.log(this.countries)
       },
+      setBreweries(){
+        for (let x of this.full_array){
+          //console.log(x)
+          //console.log(x.Country)
+          if(!this.breweries.includes(x.Brewery)){
+            this.breweries.push(x.Brewery)
+          }
+          this.breweries.sort();
+        }
+        //console.log(this.countries)
+      },
       resetDB(){
         this.db_array = [...this.full_array];
         //Reset variables
-        this.search_q = this.selected_country = this.selected_type = this.selected_brewery_type ="";
+        this.search_q = this.selected_country = this.selected_brewery = this.selected_type = this.selected_brewery_type ="";
       },
       removeAlert(){
           document.getElementById("search_alert").setAttribute("style","display: none;");
@@ -168,6 +183,29 @@ export const dbMixin ={
         
         
       },
+      filterByBrewery(){
+        if(this.selected_brewery){
+          let temp =[];
+          for (let x of this.full_array){
+            if(!this.selected_brewery.localeCompare(x.Brewery)){
+              temp.push(x)
+            }
+
+          }
+          //console.log(temp)
+          if(temp.length < 1){
+            document.getElementById("search_alert").setAttribute("style","display: default;");
+          }
+          else{
+            this.db_array = [...temp];
+          }
+          
+        }
+        else{
+          this.resetDB();
+        }
+        
+      },
       filterByCountry(){
         if(this.selected_country){
           let temp =[];
@@ -213,6 +251,79 @@ export const dbMixin ={
             this.resetDB();
           }
       },
+      //edge: INT
+      //mode: boolean (1 all greater than, 0 all less than)
+      filterByRating(edge,mode){
+        let temp =[];
+        if(mode){//>
+          for (let x of this.full_array){
+            if(x.Avg_Rank >= edge){
+              temp.push(x)
+            }
+
+          }
+          temp.sort(function(a,b) {return (a.Avg_Rank < b.Avg_Rank) ? 1 : ((b.Avg_Rank < a.Avg_Rank) ? -1 : 0);} ); 
+        }
+        else{//<
+          for (let x of this.full_array){
+            if(x.Avg_Rank <= edge){
+              temp.push(x)
+            }
+
+          }
+          temp.sort(function(a,b) {return (a.Avg_Rank > b.Avg_Rank) ? 1 : ((b.Avg_Rank > a.Avg_Rank) ? -1 : 0);} ); 
+        }
+        
+        //console.log(temp)
+        if(temp.length < 1){
+          document.getElementById("search_alert").setAttribute("style","display: default;");
+        }
+        else{
+          this.db_array = [...temp];
+        }
+            
+          
+      },
+      //Gets all unrated Beers
+      getUnrated(){
+        let temp =[];
+        let mt_rank='#DIV/0!';
+        for (let x of this.full_array){
+          if(!mt_rank.localeCompare(x.Avg_Rank)){
+            temp.push(x)
+          }
+
+        }
+        //console.log(temp)
+        if(temp.length < 1){
+          document.getElementById("search_alert").setAttribute("style","display: default;");
+        }
+        else{
+          this.db_array = [...temp];
+        }
+            
+          
+      },
+      getRated(){
+        let temp =[];
+        let mt_rank='#DIV/0!';
+        for (let x of this.full_array){
+          if(mt_rank.localeCompare(x.Avg_Rank)){
+            temp.push(x)
+          }
+
+        }
+        //console.log(temp)
+        if(temp.length < 1){
+          document.getElementById("search_alert").setAttribute("style","display: default;");
+        }
+        else{
+          this.db_array = [...temp];
+        }
+            
+          
+      },
+      
       //**Search */
       searchDB(){
         if(this.search_q){
