@@ -6,7 +6,7 @@ export const dbMixin ={
             API_KEY: "AIzaSyBZHUcJA31kXOHWWS3jFNVoQ-Y_zs-0AYw",
             db_array:[],
             full_array:[],
-            TYPES: ["IPA", "Pilsener", "Lager", "Ale","Stout", "Cider", "Wheat", "Beverage"],
+            TYPES: ["IPA", "Pilsener", "Lager", "Ale","Stout", "Cider", "Beverage"],
             selected_type: '',
             countries: [],
             selected_country: '',

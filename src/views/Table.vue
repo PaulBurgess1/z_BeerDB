@@ -38,7 +38,7 @@
                                   <i class="fas fa-glass-cheers"></i> 
                               </button>
 
-                              <button class="btn btn-success px-2"  @click="filterByRating(7,1)">
+                              <button class="btn btn-success px-2"  @click="filterByRating(8,1)">
                                 <i class="fas fa-star"></i> 
                                 Best 
                                 <i class="fas fa-star"></i> 
@@ -185,7 +185,11 @@
                                 <img v-if="beer.img_url" class="beer-img" v-bind:src="beer.img_url" v-bind:alt="beer.name">
                                 <img v-else class="beer-img" src="favicon.ico" v-bind:alt="beer.name">
                             </td>
-                            <td>{{beer.Name}}</td><!--Name-->
+                             <td>
+                              <router-link v-bind:to="'/beer/'+(full_array.indexOf(beer) +2)">
+                                {{beer.Name}}
+                              </router-link>
+                             </td><!--Name-->
                             <td>{{beer.Brewery}}</td><!--Brewery-->
                             <td class="table-active" :style="{ backgroundColor: `hsl(${beer.Avg_Rank * 11.7}, 80%, 50%)` }">
                               <h3 v-if="beer.Avg_Rank!=='#DIV/0!'" > {{beer.Avg_Rank}}</h3>
@@ -270,6 +274,7 @@ td,th{
 .sort-btn-small{
   min-width: 2rem;
   max-width: 25%;
+  margin:auto;
 }
 .btn-refresh{
   width:100%;
