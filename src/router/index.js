@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Card from '../views/Card.vue'
 import Table from '../views/Table.vue'
+import BeerPage from '../views/BeerPage.vue'
 import NotFound from '../views/NotFound.vue'
 
 const routes = [
@@ -15,8 +16,14 @@ const routes = [
         name: 'Table',
         component: Table
     },
+    //Beer Page
+    {
+      path: "/beer/:id",
+      name: 'BeerPage',
+      component: BeerPage,
+      props: true
+    },
     //Redirects
-  
     //404 Page
     {
       path: '/:catchAll(.*)',

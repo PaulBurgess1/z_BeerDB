@@ -123,7 +123,7 @@
                                        <strong> Rated  </strong>
                                         <i class="fas fa-glass-cheers"></i> 
                                         </button>
-                                    <button class="btn btn-success px-2"  @click="filterByRating(7,1)">
+                                    <button class="btn btn-success px-2"  @click="filterByRating(8,1)">
                                         <i class="fas fa-star"></i> 
                                         <strong> Best  </strong>
                                         <i class="fas fa-star"></i> 
@@ -221,7 +221,10 @@
                 <img v-else class="card-img-top" src="favicon.ico" v-bind:alt="beer.Name">
                 <div class="card-body w-100 p-0">
                     <div class="beer-title">
-                        <h5 class="card-title"><b>{{beer.Name}}</b></h5>
+                        <router-link v-bind:to="'/beer/'+(full_array.indexOf(beer) +2)">
+                            <h5 class="card-title"><b>{{beer.Name}}</b></h5>
+                        </router-link>
+                        
                         <p class="card-subtitle">{{beer.Brewery}} 
                             <i v-if="beer.Country" :class="'flag flag-'+(beer.Country).toLowerCase()"></i>
                         </p>
