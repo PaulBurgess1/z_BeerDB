@@ -133,6 +133,7 @@ export default {
     name: "BeerPage",
     data(){
             return {
+                //I set the Sheets API to Read-Only so secrets are not 100% necessary
                 API_KEY: "AIzaSyBZHUcJA31kXOHWWS3jFNVoQ-Y_zs-0AYw",
                 beer_id: this.id,
                 beer_data:[],
@@ -161,17 +162,25 @@ export default {
     
         },//getbeer
         setBeer(data){
-            if(data){
-                this.beer_data = [...(data.values[0])]
+            try {
+                if(data){
+                    this.beer_data = [...(data.values[0])]
+                }
+            } catch (error) {
+                alert("The ID "+this.beer_id+" does not match anything in the database.");
+                
             }
+            
         }
     },
     beforeMount() {
-        const router= useRouter();
-        this.getBeer(this.beer_id);
-        if(!(this.beer_id > 1) || !this.beer_data){
+       
+        if(!(this.beer_id > 1) ){ 
+            const router= useRouter();
             router.push({ path: "/404" })
         }
+        this.getBeer(this.beer_id);
+        
     },
 
 }
