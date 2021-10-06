@@ -3,16 +3,17 @@ export const dbMixin ={
         return{
             SHEET_ID: "1Z2imEpWmwWmLuy85fDLK9Y5PWWCCAhXm33oI1sh6CtA",
             SHEET_URL: "https://sheets.googleapis.com/v4/spreadsheets/1Z2imEpWmwWmLuy85fDLK9Y5PWWCCAhXm33oI1sh6CtA/values/BeerDB!A1:M200",
+            //I set the Sheets API to Read-Only so secrets are not 100% necessary
             API_KEY: "AIzaSyBZHUcJA31kXOHWWS3jFNVoQ-Y_zs-0AYw",
             db_array:[],
             full_array:[],
-            TYPES: ["IPA", "Pilsener", "Lager", "Ale","Stout", "Cider", "Beverage"],
+            TYPES: ["IPA", "Pilsener", "Lager", "Ale", "Stout", "Cider", "Beverage"],
             selected_type: '',
             countries: [],
             selected_country: '',
             breweries: [],
             selected_brewery: '',
-            BREWERY_TYPES: ["Megabrewery", "Craft", "Regional"],
+            BREWERY_TYPES: ["Megabrewery", "Craft", "Regional", "Microbrewery"],
             selected_brewery_type: '',
             search_q: ''
         }
@@ -327,23 +328,31 @@ export const dbMixin ={
       //**Search */
       searchDB(){
         if(this.search_q){
+          this.search_q = this.search_q.toLowerCase();
           let temp =[];
           for (let x of this.full_array){
-            if(x.Name.includes(this.search_q)){
-              temp.push(x)
-            }
-            else if (x.Brewery.includes(this.search_q)) {
-              temp.push(x)
+            if(x.Name.toLowerCase().includes(this.search_q)){
+              temp.push(x);
+            }//Name check
+            else if (x.Brewery){
+              if(x.Brewery.toLowerCase().includes(this.search_q)) {
+                temp.push(x);
+              }//Brewery check
+              else if(x.Type){
+                if((x.Type.toLowerCase()).includes(this.search_q)){
+                  temp.push(x);
+                }//Type check
+                else if(x.Origin){
+                  if(x.Origin.toLowerCase().includes(this.search_q)){
+                    temp.push(x);
+                  }
+                }//Origin check
+              }
             } 
-            else if(x.Type.includes(this.search_q)){
-              temp.push(x)
-            }
-            else if(x.Origin.includes(this.search_q)){
-              temp.push(x)
-            }
             
-
+            
           }//for
+
           //console.log(temp)
           if(temp.length < 1){
             document.getElementById("search_alert").setAttribute("style","display: default;");
