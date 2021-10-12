@@ -1,9 +1,9 @@
 <template>
-    <div class="container-fluid row g-0 w-100">
+    <div class="container-fluid row g-0 w-100 bg-light">
           <div class="col table-responsive-sm g-0 beer-table">
            
           <!--Table-->
-            <table class="table table-bordered table-striped" 
+            <table class="table table-bordered table-striped bg-light" 
                 id="table" 
                 data-filter-control="true"
                 >
@@ -291,10 +291,14 @@ th > button:not(:first-child){
   margin-left:1rem;
 }
 /*Media Queries*/
-@media(max-width: 40rem){
+/* Table breaks at around 61 em (976 px) */
+@media(max-width: 61em){
     .beer-img{
         height: 4rem;
         width: 4rem;
+    }
+    .table{
+      font-size: 85%;
     }
 }
 </style>

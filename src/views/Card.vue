@@ -1,5 +1,5 @@
 <template>
-    <div class="main-div">
+    <div class="main-div bg-light">
         <div class="deck-head bg-dark">
             
             <ul class="nav nav-justified" id="myTab" role="tablist">
@@ -217,7 +217,9 @@
         <div class="card-deck beer-deck" v-for="beer in db_array" :key="beer.Name">
             
             <div class="card beer-card">
-                <img v-if="beer.img_url" class="card-img-top" v-bind:src="beer.img_url" v-bind:alt="beer.Name">
+                <img v-if="beer.img_url" class="card-img-top" v-bind:src="beer.img_url" v-bind:alt="beer.Name"
+                
+                >
                 <img v-else class="card-img-top" src="favicon.ico" v-bind:alt="beer.Name">
                 <div class="card-body w-100 p-0">
                     <div class="beer-title">

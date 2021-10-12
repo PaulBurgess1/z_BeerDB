@@ -38,4 +38,32 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
+body{
+  background-color: var(--clr-bg-hf);
+}
+/* Non Mobile Devices ( > 640px) */
+@media(min-width: 40em){
+  /* Scrollbar */
+  /*Not supported on IE or Firefox */
+  body::-webkit-scrollbar {
+    width: auto;
+  }
+
+  body::-webkit-scrollbar-track {
+    background-color: var(--clr-bg-hf);
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: #F6C101;
+    border: 0.125em solid var(--clr-text);
+    border-radius: 100vw;
+  }
+
+  body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--clr-text);
+  }
+  body::-webkit-scrollbar-corner {
+    background-color: var(--clr-bg-hf-btn);
+  }
+}
 </style>
