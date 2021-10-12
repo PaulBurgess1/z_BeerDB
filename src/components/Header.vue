@@ -43,13 +43,13 @@ h1{
 .header-title{
     white-space: nowrap;
     background-image: 
-      linear-gradient(180deg, var(--clr-text), #F6C101);
+      linear-gradient(180deg, var(--clr-text), var(--clr-primary));
     background-clip: text;
     color: transparent;
 }
 .header-title > i{
 background-image: 
-      linear-gradient(180deg, var(--clr-text), #F6C101);
+      linear-gradient(180deg, var(--clr-text), var(--clr-primary));
     background-clip: text;
     color: transparent;
 }

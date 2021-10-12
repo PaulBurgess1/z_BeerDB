@@ -4,8 +4,7 @@
            
           <!--Table-->
             <table class="table table-bordered table-striped bg-light" 
-                id="table" 
-                data-filter-control="true"
+                id="table"
                 >
                 
                         <thead class="table-dark">
@@ -198,8 +197,22 @@
                             <td>{{beer.Type}}</td><!--Type-->
                             <td>{{beer.Brewery_Type}}</td>
                             <td>{{beer.ABV}}</td><!--ABV-->
-                            <td>{{beer.IBU}}</td><!--IBU-->
-                            <td>{{beer.PricePerCan}}</td><!--APPX price per can-->
+                            <td>
+                              <span v-if="beer.IBU">
+                                {{beer.IBU}}
+                              </span>
+                              <span v-else>
+                                N/A
+                              </span>
+                              </td><!--IBU-->
+                            <td>
+                              <span v-if="beer.PricePerCan">
+                                {{beer.PricePerCan}}
+                              </span>
+                              <span v-else>
+                                N/A
+                              </span>
+                              </td><!--APPX price per can-->
                             <td>
                               {{beer.Country}} <i :class="'flag flag-'+(beer.Country).toLowerCase()"></i>
                               </td>

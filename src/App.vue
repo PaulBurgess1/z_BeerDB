@@ -26,11 +26,12 @@ export default {
 
 <style>
 :root {
-    --clr-bg: hsl(210, 10%, 80%);
-    --clr-bg-hf: 	hsl(210, 10%, 23%);
-    --clr-bg-hf-secondary: hsl(210, 10%, 35%);
-    --clr-bg-hf-btn: hsl(210, 10%, 45%);
-    --clr-text: azure;
+  --clr-primary:  #F6C101;
+  --clr-bg: hsl(210, 10%, 80%);
+  --clr-bg-hf: 	hsl(210, 10%, 23%);
+  --clr-bg-hf-secondary: hsl(210, 10%, 35%);
+  --clr-bg-hf-btn: hsl(210, 10%, 45%);
+  --clr-text: azure;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -54,7 +55,7 @@ body{
   }
 
   body::-webkit-scrollbar-thumb {
-    background-color: #F6C101;
+    background-color: var(--clr-primary);
     border: 0.125em solid var(--clr-text);
     border-radius: 100vw;
   }
@@ -65,5 +66,13 @@ body{
   body::-webkit-scrollbar-corner {
     background-color: var(--clr-bg-hf-btn);
   }
+  /* For Firefox */
+  @supports( scrollbar-color: red red){
+    *{
+      scrollbar-color: var(--clr-primary) var(--clr-bg-hf);
+      scrollbar-width: auto;
+    }
+  }
+  
 }
 </style>
