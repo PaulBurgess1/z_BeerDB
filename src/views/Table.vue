@@ -72,15 +72,7 @@
                               </div>
                             </th>
                             <th data-field="Brewery" scope="col">
-                              <div class="btn-box-small">
-                                <button class="sort-btn-small" @click="sortByBrewery(1)">
-                                  <i class="fas fa-sort-up"></i>
-                                </button>
                                 Brewery
-                                <button class="sort-btn-small" @click="sortByBrewery(0)">
-                                  <i class="fas fa-sort-down"></i>
-                                </button>
-                              </div>
                               <select class="form-select form-select-sm" name="brewery" id="brewery" v-model="selected_brewery" @change="this.filterByBrewery();">
                                 <option selected></option>
                                 <option v-for="brewery in breweries" :key="brewery" :value="brewery">
@@ -122,7 +114,7 @@
                                 </div>
                               </th>
                             <th scope="col">
-                              ABV
+                              <abbr title="Alcohol By Volume">ABV</abbr>
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByABV(1)">
                                   <i class="fas fa-sort-up"></i>
@@ -132,7 +124,7 @@
                                 </button>
                               </div></th>
                             <th scope="col">
-                              IBU
+                              <abbr title="International Bitterness Units">IBU</abbr>
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByIBU(1)">
                                   <i class="fas fa-sort-up"></i>
@@ -154,8 +146,11 @@
                                 </div>
                               </th>
                             <th scope="col">Origin</th>
-                            <th scope="col">
-                              Felix's Rank
+                            <th class="text-nowrap" scope="col">
+                              <small class="">
+                                Felix's Rank
+                              </small>
+                              
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByFRank(1)">
                                   <i class="fas fa-sort-up"></i>
@@ -165,8 +160,10 @@
                                 </button>
                               </div>
                               </th>
-                            <th scope="col">
-                              Paul's Rank
+                            <th class="text-nowrap" scope="col">
+                              <small>
+                                Paul's Rank
+                              </small>
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByPRank(1)">
                                   <i class="fas fa-sort-up"></i>

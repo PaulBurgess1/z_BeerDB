@@ -372,6 +372,7 @@ export const dbMixin ={
     if(this.db_array.length === 0){
       this.initDB();
     }
+    
   }
 
 }

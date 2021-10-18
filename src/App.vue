@@ -10,7 +10,6 @@
 <script>
 import Footer from './components/Footer.vue'
 import Header from './components/Header.vue'
-
 export default {
   name: 'App',
   components: {
@@ -40,7 +39,7 @@ export default {
   text-align: center;
 }
 body{
-  background-color: var(--clr-bg-hf);
+  background-color: var(--bs-light);
 }
 /* Non Mobile Devices ( > 640px) */
 @media(min-width: 40em){
