@@ -1,5 +1,5 @@
 <template>
-    <div class="main-div">
+    <div class="main-div bg-light">
         <div class="deck-head bg-dark">
             
             <ul class="nav nav-justified" id="myTab" role="tablist">
@@ -88,7 +88,12 @@
                                 </div>
                             </div>
                             <div class="col gx-0">
-                                <h5>Country</h5>
+                                <h5>Country
+                                    <span class="tooltiptext">Countries are displayed by their 
+                                        <a href="https://en.wikipedia.org/wiki/ISO_3166-2" target="_blank" rel="noopener noreferrer">ISO 3166-2</a>
+                                        country code.
+                                    </span>
+                                </h5>
                                 <div class="btn-box">
                                 <select class="form-select form-select-sm" name="country" id="country" v-model="selected_country" @change="this.filterByCountry();">
                                     <option selected value=""></option>
@@ -99,7 +104,19 @@
                                 </div>
                             </div>
                             <div class="col gx-0">
-                                <h5><small>Brewery Type</small></h5>
+                                <h5>
+                                    <span class="tooltiptext">
+                                        <u>Megabrewery:</u> Large commercial brewery.
+                                        <br>
+                                        <u>Craft:</u> A small, independently owned brewery.
+                                        <br>
+                                        <u>Regional:</u> A brewery that only operates in a single region.
+                                        <br>
+                                        <u>Microbrewery:</u> A single, independently owned brewery.
+                                    </span>
+                                    <small>Brewery Type</small>
+                                
+                                </h5>
                                 <div class="btn-box">
                                 <select class="form-select form-select-sm" name="b_types" id="b_types" v-model="selected_brewery_type" @change="this.filterByBreweryType();">
                                     <option selected></option>
@@ -144,7 +161,10 @@
                     <!--Sort-->
                         <div class="row pt-1 gx-0">
                             <div class="col gx-0">
-                                <h5>Name</h5>
+                                
+                                <h5>
+                                    Name
+                                </h5>
                                 <div class="btn-box">
                                     <button class="sort-btn" @click="sortByName(1)">
                                        <i class="fas fa-sort-up"></i>
@@ -167,7 +187,10 @@
                             </div>
                         
                             <div class="col">
-                                <h5>Rank</h5>
+                                <h5>Rank
+                                    <span class="tooltiptext"> Rank ranges from 10 (Best) to 0 (Worst).
+                                    </span>
+                                </h5>
                                 <div class="btn-box">
                                     <button class="sort-btn" @click="sortByAvgRank(1)">
                                         <i class="fas fa-sort-up"></i>
@@ -178,7 +201,7 @@
                                 </div>
                             </div>
                             <div class="col">
-                                <h5>ABV</h5>
+                                <h5><abbr title="Alcohol By Volume">ABV</abbr></h5>
                                 <div class="btn-box">
                                     <button class="sort-btn" @click="sortByABV(1)">
                                         <i class="fas fa-sort-up"></i>
@@ -189,7 +212,7 @@
                                 </div>
                             </div>
                             <div class="col">
-                                <h5>IBU</h5>
+                                <h5><abbr title="International Bitterness Units">IBU</abbr></h5>
                                 <div class="btn-box">
                                     <button class="sort-btn" @click="sortByIBU(1)">
                                         <i class="fas fa-sort-up"></i>
@@ -217,7 +240,9 @@
         <div class="card-deck beer-deck" v-for="beer in db_array" :key="beer.Name">
             
             <div class="card beer-card">
-                <img v-if="beer.img_url" class="card-img-top" v-bind:src="beer.img_url" v-bind:alt="beer.Name">
+                <img v-if="beer.img_url" class="card-img-top" v-bind:src="beer.img_url" v-bind:alt="beer.Name"
+                
+                >
                 <img v-else class="card-img-top" src="favicon.ico" v-bind:alt="beer.Name">
                 <div class="card-body w-100 p-0">
                     <div class="beer-title">
@@ -334,6 +359,25 @@ export default {
 }
 .rank-filter-box>*:not(:first-child){
     margin-left: 1rem;
+}
+h5 .tooltiptext {
+  visibility: hidden;
+  font-size: 1rem;
+  max-width: 25%;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  border: 2px dashed var(--clr-primary);
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+h5:hover .tooltiptext {
+  visibility: visible;
 }
 
 /*Media Queries*/

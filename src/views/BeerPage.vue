@@ -57,11 +57,11 @@
                                 <td>{{beer_data[2]}}</td>
                             </tr>
                             <tr>
-                                <th>ABV</th>
+                                <th><abbr title="Alcohol By Volume">ABV</abbr></th>
                                 <td>{{beer_data[9]}}</td>
                             </tr>
                             <tr>
-                                <th>IBU</th>
+                                <th><abbr title="International Bitterness Units">IBU</abbr></th>
                                 <td v-if="beer_data[10]">{{beer_data[10]}}</td>
                                 <td v-else>N/A</td>
                             </tr>

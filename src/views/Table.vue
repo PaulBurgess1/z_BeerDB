@@ -1,11 +1,10 @@
 <template>
-    <div class="container-fluid row g-0 w-100">
+    <div class="container-fluid row g-0 w-100 bg-light">
           <div class="col table-responsive-sm g-0 beer-table">
            
           <!--Table-->
-            <table class="table table-bordered table-striped" 
-                id="table" 
-                data-filter-control="true"
+            <table class="table table-bordered table-striped bg-light" 
+                id="table"
                 >
                 
                         <thead class="table-dark">
@@ -73,15 +72,7 @@
                               </div>
                             </th>
                             <th data-field="Brewery" scope="col">
-                              <div class="btn-box-small">
-                                <button class="sort-btn-small" @click="sortByBrewery(1)">
-                                  <i class="fas fa-sort-up"></i>
-                                </button>
                                 Brewery
-                                <button class="sort-btn-small" @click="sortByBrewery(0)">
-                                  <i class="fas fa-sort-down"></i>
-                                </button>
-                              </div>
                               <select class="form-select form-select-sm" name="brewery" id="brewery" v-model="selected_brewery" @change="this.filterByBrewery();">
                                 <option selected></option>
                                 <option v-for="brewery in breweries" :key="brewery" :value="brewery">
@@ -123,7 +114,7 @@
                                 </div>
                               </th>
                             <th scope="col">
-                              ABV
+                              <abbr title="Alcohol By Volume">ABV</abbr>
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByABV(1)">
                                   <i class="fas fa-sort-up"></i>
@@ -133,7 +124,7 @@
                                 </button>
                               </div></th>
                             <th scope="col">
-                              IBU
+                              <abbr title="International Bitterness Units">IBU</abbr>
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByIBU(1)">
                                   <i class="fas fa-sort-up"></i>
@@ -155,8 +146,11 @@
                                 </div>
                               </th>
                             <th scope="col">Origin</th>
-                            <th scope="col">
-                              Felix's Rank
+                            <th class="text-nowrap" scope="col">
+                              <small class="">
+                                Felix's Rank
+                              </small>
+                              
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByFRank(1)">
                                   <i class="fas fa-sort-up"></i>
@@ -166,8 +160,10 @@
                                 </button>
                               </div>
                               </th>
-                            <th scope="col">
-                              Paul's Rank
+                            <th class="text-nowrap" scope="col">
+                              <small>
+                                Paul's Rank
+                              </small>
                               <div class="btn-box">
                                 <button class="sort-btn" @click="sortByPRank(1)">
                                   <i class="fas fa-sort-up"></i>
@@ -198,8 +194,22 @@
                             <td>{{beer.Type}}</td><!--Type-->
                             <td>{{beer.Brewery_Type}}</td>
                             <td>{{beer.ABV}}</td><!--ABV-->
-                            <td>{{beer.IBU}}</td><!--IBU-->
-                            <td>{{beer.PricePerCan}}</td><!--APPX price per can-->
+                            <td>
+                              <span v-if="beer.IBU">
+                                {{beer.IBU}}
+                              </span>
+                              <span v-else>
+                                N/A
+                              </span>
+                              </td><!--IBU-->
+                            <td>
+                              <span v-if="beer.PricePerCan">
+                                {{beer.PricePerCan}}
+                              </span>
+                              <span v-else>
+                                N/A
+                              </span>
+                              </td><!--APPX price per can-->
                             <td>
                               {{beer.Country}} <i :class="'flag flag-'+(beer.Country).toLowerCase()"></i>
                               </td>
@@ -291,10 +301,14 @@ th > button:not(:first-child){
   margin-left:1rem;
 }
 /*Media Queries*/
-@media(max-width: 40rem){
+/* Table breaks at around 61 em (976 px) */
+@media(max-width: 61em){
     .beer-img{
         height: 4rem;
         width: 4rem;
+    }
+    .table{
+      font-size: 85%;
     }
 }
 </style>
