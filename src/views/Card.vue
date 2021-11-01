@@ -89,10 +89,12 @@
                             </div>
                             <div class="col gx-0">
                                 <h5>Country
+                                    <!--
                                     <span class="tooltiptext">Countries are displayed by their 
                                         <a href="https://en.wikipedia.org/wiki/ISO_3166-2" target="_blank" rel="noopener noreferrer">ISO 3166-2</a>
                                         country code.
                                     </span>
+                                    -->
                                 </h5>
                                 <div class="btn-box">
                                 <select class="form-select form-select-sm" name="country" id="country" v-model="selected_country" @change="this.filterByCountry();">
@@ -105,6 +107,7 @@
                             </div>
                             <div class="col gx-0">
                                 <h5>
+                                    <!--
                                     <span class="tooltiptext">
                                         <u>Megabrewery:</u> Large commercial brewery.
                                         <br>
@@ -114,6 +117,7 @@
                                         <br>
                                         <u>Microbrewery:</u> A single, independently owned brewery.
                                     </span>
+                                    -->
                                     <small>Brewery Type</small>
                                 
                                 </h5>
@@ -188,8 +192,7 @@
                         
                             <div class="col">
                                 <h5>Rank
-                                    <span class="tooltiptext"> Rank ranges from 10 (Best) to 0 (Worst).
-                                    </span>
+                                    
                                 </h5>
                                 <div class="btn-box">
                                     <button class="sort-btn" @click="sortByAvgRank(1)">
@@ -355,7 +358,6 @@ export default {
     display: flex;
     justify-content: center;
     
-    
 }
 .rank-filter-box>*:not(:first-child){
     margin-left: 1rem;
@@ -398,7 +400,10 @@ h5:hover .tooltiptext {
         margin: 0rem;
     }
     .col > h5{
-    font-size: 90%;
+        font-size: 90%;
+    }
+    h5:hover .tooltiptext {
+        visibility: hidden;
     }
 }
 </style>
