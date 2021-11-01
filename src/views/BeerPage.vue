@@ -3,7 +3,7 @@
         <div class="beer-box" :style="{ 'border': `2px solid hsl(${beer_data[4]*10}, 90%, 50%)` }">
             <div class="bp-header row gx-0" >
                 <div class="col">
-                    <img v-if="beer_data[12]" class="bp-img" v-bind:src="beer_data[12]" v-bind:alt="beer_data[0]" :style="{ 'box-shadow': `0 0 0.7rem hsl(${beer_data[4]*10}, 80%, 50%)`, 'border': `1px solid hsl(${beer_data[4]*10}, 90%, 50%)` }" >
+                    <img v-if="beer_data[11]" class="bp-img" v-bind:src="beer_data[11]" v-bind:alt="beer_data[0]" :style="{ 'box-shadow': `0 0 0.7rem hsl(${beer_data[4]*10}, 80%, 50%)`, 'border': `1px solid hsl(${beer_data[4]*10}, 90%, 50%)` }" >
                     <img v-else class="bp-img" src="favicon.ico" v-bind:alt="beer_data[0]">
                 </div>
                 <div class="bp-title col mr-1">
@@ -72,11 +72,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Price per Can</th>
-                                <td v-if="beer_data[11]">{{beer_data[11]}}</td>
-                                <td v-else>N/A</td>
-                            </tr>
-                            <tr>
                                 <th>Brewery Type</th>
                                 <td>{{beer_data[3]}}</td>
                             </tr>
@@ -101,11 +96,143 @@
                             
                         </h6>
                         <span v-if="beer_data[13]">
-                            <h4>Notes</h4>
                             <h5>"{{beer_data[13]}}"</h5>
                         </span>
                         
-                        
+                        <div v-if="!(bottles.length==0 && cans.length==0)" class="beerstore-info">
+                            <table class="table table-bordered">
+                                <caption>This information is from the Victoria Park/Finch BeerStore in Toronto. 
+                                    <br>
+                                    To check your local store
+                                    <a v-bind:href=bsUrl target="_blank" rel="noopener noreferrer">
+                                        CLICK HERE
+                                    </a>
+                                </caption>
+                                <thead class="table-warning">
+                                    <tr>
+                                        <th class="pt-1" colspan="2">
+                                            <h3>BeerStore Prices</h3>
+                                        </th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <!--Bottles-->
+                                        <th>
+                                            <table class="table table-bordered table-striped">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th colspan= "4">
+                                                            <i class="fas fa-wine-bottle"></i>
+                                                            Bottles
+                                                        </th>
+                                                    </tr>
+                                                     <tr>
+                                                        <th>
+                                                            Format
+                                                        </th>
+                                                        <th>
+                                                            Stock
+                                                        </th>
+                                                        <th>
+                                                            Price
+                                                        </th>
+                                                        <th>
+                                                            <small>
+                                                                Per Bottle
+                                                            </small>
+                                                            
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="bottle in bottles" :key="bottle[0]">
+                                                        <td>
+                                                            {{bottle[0]}}
+                                                        </td>
+                                                        <td>
+                                                            <small v-if="bottle[1][0]=='O'">
+                                                                0
+                                                            </small>
+                                                            <small v-else>
+                                                                {{bottle[1]}}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            {{bottle[2]}}
+                                                        </td>
+                                                        <td>
+                                                            {{bottle[3]}}
+                                                        </td>
+
+
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </th>
+                                        <!--Cans-->
+                                        <th>
+                                            <table class="table table-bordered table-striped">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th colspan= "4">
+                                                            <i class="fas fa-cube"></i>
+                                                            Cans
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>
+                                                            Format
+                                                        </th>
+                                                        <th>
+                                                            Stock
+                                                        </th>
+                                                        <th>
+                                                            Price
+                                                        </th>
+                                                        <th>
+                                                            <small>
+                                                                 Per Can
+                                                            </small>
+                                                           
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                     <tr v-for="can in cans" :key="can[0]">
+                                                        <td>
+                                                            {{can[0]}}
+                                                        </td>
+                                                        <td>
+                                                            <small v-if="can[1][0]=='O'">
+                                                                0
+                                                            </small>
+                                                            <small v-else>
+                                                                {{can[1]}}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            {{can[2]}}
+                                                        </td>
+                                                        <td>
+                                                            {{can[3]}}
+                                                        </td>
+
+
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </th>
+                                        <!--End-->
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                        </div>
                         <span class="logo-box pt-1">
                             <a v-bind:href="'https://www.thebeerstore.ca/beers/?search_type=beer_page&searchval='+beer_data[0]" target="_blank" rel="noopener noreferrer">
                                 <img class="btn-logo" src="..\assets\BeerStore.jpg" alt="Beer Store">
@@ -137,6 +264,9 @@ export default {
                 API_KEY: "AIzaSyBZHUcJA31kXOHWWS3jFNVoQ-Y_zs-0AYw",
                 beer_id: this.id,
                 beer_data:[],
+                bottles:[],
+                cans:[],
+                bsUrl:""
             }
         },
     methods:{
@@ -165,12 +295,40 @@ export default {
             try {
                 if(data){
                     this.beer_data = [...(data.values[0])]
+                    this.beerstoreInfo(this.beer_data[0])
                 }
             } catch (error) {
                 alert("The ID "+this.beer_id+" does not match anything in the database.");
                 
             }
             
+        },
+        async beerstoreInfo(name){
+            try {
+                await fetch("https://brewski--api.herokuapp.com/beerstore/"+name, 
+               )
+                .then(res => {
+                    if (res.status == 200){
+                        let data =res.json();
+                        return data;
+                    }
+                    else{
+                        console.log("error")
+                        alert("Error "+res.status+": "+res.statusText);
+                        return;
+                    }
+                })
+                .then(this.setBSinfo);
+                } catch (error) {
+                alert(error.message);
+                }
+        },
+        setBSinfo(data){
+            if(data){
+                this.bottles= [...data.bottles]
+                this.cans = [...data.cans]
+                this.bsUrl= data.url
+            }
         }
     },
     beforeMount() {
@@ -180,6 +338,7 @@ export default {
             router.push({ path: "/404" })
         }
         this.getBeer(this.beer_id);
+
         
     },
 
@@ -194,7 +353,7 @@ export default {
   margin: 1rem 0 1rem 0;
   padding:0.75rem;
   
-  
+  min-width: 50%;
   appearance: none;
   border-radius: 1rem;
   outline: none;
@@ -238,5 +397,12 @@ export default {
     border-radius: 1rem 1rem 1rem 1rem;
     border: 1px solid black;
     
+}
+.beerstore-info{
+    width: stretch;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }
 </style>

@@ -133,7 +133,7 @@
                                   <i class="fas fa-sort-down"></i>
                                 </button>
                               </div></th>
-                            <th scope="col">$ Per Can</th>
+                            
                             <th scope="col">
                               Country
                               <div class="btn-box">
@@ -202,14 +202,6 @@
                                 N/A
                               </span>
                               </td><!--IBU-->
-                            <td>
-                              <span v-if="beer.PricePerCan">
-                                {{beer.PricePerCan}}
-                              </span>
-                              <span v-else>
-                                N/A
-                              </span>
-                              </td><!--APPX price per can-->
                             <td>
                               {{beer.Country}} <i :class="'flag flag-'+(beer.Country).toLowerCase()"></i>
                               </td>
