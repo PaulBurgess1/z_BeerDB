@@ -95,12 +95,12 @@
                             </span>
                             
                         </h6>
-                        <span v-if="beer_data[13]">
-                            <h5>"{{beer_data[13]}}"</h5>
-                        </span>
+                        <div v-if="beer_data[12]">
+                            <h5>"{{beer_data[12]}}"</h5>
+                        </div>
                         
                         <div v-if="!(bottles.length==0 && cans.length==0)" class="beerstore-info">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered border-warning">
                                 <caption>This information is from the Victoria Park/Finch BeerStore in Toronto. 
                                     <br>
                                     To check your local store
@@ -108,10 +108,10 @@
                                         CLICK HERE
                                     </a>
                                 </caption>
-                                <thead class="table-warning">
+                                <thead class="table-dark table-bordered border-warning">
                                     <tr>
                                         <th class="pt-1" colspan="2">
-                                            <h3>BeerStore Prices</h3>
+                                            <h3 class="text-warning">BeerStore Prices</h3>
                                         </th>
                                     </tr>
                                     
@@ -404,5 +404,11 @@ export default {
     justify-content: center;
     align-items: center;
     align-content: center;
+}
+/*Media Queries*/
+@media(max-width: 40em){
+    .beer-box{
+        padding: 0;
+    }
 }
 </style>
