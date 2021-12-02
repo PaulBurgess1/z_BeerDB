@@ -7,11 +7,13 @@
             <i class="fas fa-beer"></i>
         </h1>
     </div>
+    <!--   Felix keeps hitting by mistake on mobile, moving it to the Footer
     <div class="">
         <a class="btn btn-success mb-1" href="https://docs.google.com/spreadsheets/d/1Z2imEpWmwWmLuy85fDLK9Y5PWWCCAhXm33oI1sh6CtA/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
         <i class="fas fa-database"></i> To The Database <i class="fas fa-database"></i>
         </a>
     </div>
+    -->
     <div>
         <router-link class="btn btn-primary" to="/"> <i class="far fa-sticky-note"></i> Card View </router-link>
         <router-link class="btn btn-primary" to="/table"> <i class="fas fa-table"></i> Table View </router-link>
