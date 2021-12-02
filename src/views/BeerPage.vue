@@ -100,7 +100,7 @@
                         </div>
                         
                         <div v-if="!(bottles.length==0 && cans.length==0)" class="beerstore-info">
-                            <table class="table table-bordered border-warning">
+                            <table class="table table-bordered border-warning table-striped">
                                 <caption>This information is from the Victoria Park/Finch BeerStore in Toronto. 
                                     <br>
                                     To check your local store
@@ -110,79 +110,75 @@
                                 </caption>
                                 <thead class="table-dark table-bordered border-warning">
                                     <tr>
-                                        <th class="pt-1" colspan="2">
+                                        <th class="pt-1" colspan="5">
                                             <h3 class="text-warning">BeerStore Prices</h3>
                                         </th>
                                     </tr>
                                     
                                 </thead>
                                 <tbody>
-                                    <tr>
                                         <!--Bottles-->
-                                        <th>
-                                            <table class="table table-bordered table-striped">
-                                                <thead class="table-dark">
-                                                    <tr>
-                                                        <th colspan= "4">
-                                                            <i class="fas fa-wine-bottle"></i>
-                                                            Bottles
-                                                        </th>
-                                                    </tr>
-                                                     <tr>
-                                                        <th>
-                                                            Format
-                                                        </th>
-                                                        <th>
-                                                            Stock
-                                                        </th>
-                                                        <th>
-                                                            Price
-                                                        </th>
-                                                        <th>
-                                                            <small>
-                                                                Per Bottle
-                                                            </small>
-                                                            
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr v-for="bottle in bottles" :key="bottle[0]">
-                                                        <td>
-                                                            {{bottle[0]}}
-                                                        </td>
-                                                        <td>
-                                                            <small v-if="bottle[1][0]=='O'">
-                                                                0
-                                                            </small>
-                                                            <small v-else>
-                                                                {{bottle[1]}}
-                                                            </small>
-                                                        </td>
-                                                        <td>
-                                                            {{bottle[2]}}
-                                                        </td>
-                                                        <td>
-                                                            {{bottle[3]}}
-                                                        </td>
+                                    
+                                            <tr class="table-dark table-bordered border-warning" v-if="bottles.length>0">
+                                                <th colspan= "5">
+                                                    <i class="fas fa-wine-bottle"></i>
+                                                    Bottles
+                                                </th>
+                                            </tr>
+                                            <tr class="table-dark table-bordered border-warning" v-if="bottles.length>0"> 
+                                                <th>
+                                                    Format
+                                                </th>
+                                                <th>
+                                                    Stock
+                                                </th>
+                                                <th>
+                                                    Price
+                                                </th>
+                                                <th>
+                                                    <small>
+                                                        Per Bottle
+                                                    </small>
+                                                </th>
+                                                <th>
+                                                    <small>
+                                                        Per 100ml 
+                                                    </small>
+                                                </th>
+                                            </tr>
+                                            <tr v-for="bottle in bottles" :key="bottle[0]">
+                                                <td>
+                                                    {{bottle[0]}}
+                                                </td>
+                                                <td>
+                                                    <small v-if="bottle[1][0]=='O'">
+                                                        0
+                                                    </small>
+                                                    <small v-else>
+                                                        {{bottle[1]}}
+                                                    </small>
+                                                </td>
+                                                <td>
+                                                    {{bottle[2]}}
+                                                </td>
+                                                <td>
+                                                    {{bottle[3]}}
+                                                </td>
+                                                <td>
+                                                    {{bottle[4]}}
+                                                </td>
+                                            </tr>
 
-
-
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </th>
                                         <!--Cans-->
-                                        <th>
-                                            <table class="table table-bordered table-striped">
-                                                <thead class="table-dark">
-                                                    <tr>
-                                                        <th colspan= "4">
+
+                                        
+                                                    <tr class="table-dark table-bordered border-warning" v-if="cans.length>0">
+                                                        <th colspan= "5">
                                                             <i class="fas fa-cube"></i>
                                                             Cans
                                                         </th>
                                                     </tr>
-                                                    <tr>
+                                                    <tr class="table-dark table-bordered border-warning" v-if="cans.length>0">
                                                         <th>
                                                             Format
                                                         </th>
@@ -198,9 +194,12 @@
                                                             </small>
                                                            
                                                         </th>
+                                                        <th>
+                                                            <small>
+                                                                Per 100ml
+                                                            </small>
+                                                        </th>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
                                                      <tr v-for="can in cans" :key="can[0]">
                                                         <td>
                                                             {{can[0]}}
@@ -219,15 +218,16 @@
                                                         <td>
                                                             {{can[3]}}
                                                         </td>
+                                                        <td>
+                                                            {{can[4]}}
+                                                        </td>
 
 
 
                                                     </tr>
-                                                </tbody>
-                                            </table>
-                                        </th>
+                                           
                                         <!--End-->
-                                    </tr>
+
 
                                 </tbody>
 
